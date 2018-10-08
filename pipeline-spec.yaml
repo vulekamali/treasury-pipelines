@@ -13,12 +13,40 @@ epre-subprogrammes-2018-19:
         url: "file://SubProgramme Details - EPRE 2018-19 Tabled.csv"
         format: csv
     - run: stream_remote_resources
-      cache: True
+      cache: False
     - run: filter
       parameters:
         resources: epre-subprogrammes-2018-19-from-jonathan
         out:
           - Subprogramme: null
+    - run: unpivot
+      parameters:
+        resources: 'epre-subprogrammes-2018-19-from-jonathan'
+        extraKeyFields:
+          - name: financial_year
+            type: integer
+          - name: budget_phase
+            type: string
+            constraints:
+              enum:
+                - Main appropriation
+                - Medium Term Estimates
+        extraValueField:
+            name: amount
+            type: number
+        unpivot:
+          - name: "Sum - 2018/19 Revised baseline"
+            keys:
+              financial_year: 2018
+              budget_phase: Main appropriation
+          - name: "Sum - 2019/20 Revised baseline"
+            keys:
+              financial_year: 2019
+              budget_phase: Medium Term Estimates
+          - name: "Sum - 2020/21 Indicative baseline"
+            keys:
+              financial_year: 2020
+              budget_phase: Medium Term Estimates
     - run: dump.to_path
       parameters:
         out-path: 'epre-subprogrammes-2018-19'
