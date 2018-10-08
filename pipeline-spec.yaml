@@ -1,0 +1,24 @@
+epre-subprogrammes-2018-19:
+  title: Estimates of Provincial Expenditure Subprogrammes 2018-19
+  description: Sub-programme breakdown in the 2018-19 EPRE documents
+  pipeline:
+    - run: add_metadata
+      parameters:
+        name: 'epre-subprogrammes-2018-19'
+        title: 'Estimates of Provincial Expenditure Subprogrammes 2018-19'
+        homepage: 'https://vulekamali.gov.za/datasets/'
+    - run: add_resource
+      parameters:
+        name: 'epre-subprogrammes-2018-19-from-jonathan'
+        url: "file://SubProgramme Details - EPRE 2018-19 Tabled.csv"
+        format: csv
+    - run: stream_remote_resources
+      cache: True
+    - run: filter
+      parameters:
+        resources: epre-subprogrammes-2018-19-from-jonathan
+        out:
+          - Subprogramme: null
+    - run: dump.to_path
+      parameters:
+        out-path: 'epre-subprogrammes-2018-19'
