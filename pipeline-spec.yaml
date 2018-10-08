@@ -51,7 +51,6 @@ epre-subprogrammes-2018-19:
       parameters:
         sphere: provincial
         financial_year: 2018-19
-
     - run: dump.to_path
       parameters:
         out-path: 'epre-subprogrammes-2018-19'
