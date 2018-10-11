@@ -32,7 +32,7 @@ epre-subprogrammes-2018-19:
                 - Main appropriation
                 - Medium Term Estimates
         extraValueField:
-            name: amount
+            name: value
             type: number
         unpivot:
           - name: "Sum - 2018/19 Revised baseline"

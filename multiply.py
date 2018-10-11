@@ -10,9 +10,9 @@ def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
     try:
-        if row['amount'] == '':
-            row['amount'] = '0'
-        row['amount'] = float(row['amount']) * 1000
+        if row['value'] == '':
+            row['value'] = '0'
+        row['value'] = float(row['value']) * 1000
         return row
     except:
         logging.exception("Error with row %r", row)
