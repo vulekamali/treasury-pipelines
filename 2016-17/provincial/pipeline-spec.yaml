@@ -1,119 +1,119 @@
-epre-subprogrammes-2017-18:
-  title: EPRE Subprogrammes 2017-18
+epre-subprogrammes-2016-17:
+  title: EPRE Subprogrammes 2016-17
   description: Data per year, provided in metric tons per capita.
   pipeline:
     - run: add_metadata
       parameters:
-        title: EPRE Subprogrammes 2017-18
-        name: 'epre-2017-18-subprogrammes'
+        title: EPRE Subprogrammes 2016-17
+        name: 'epre-2016-17-subprogrammes'
 
     - run: add_resource
       parameters:
-        name: 'epre-2017-18-ec'
+        name: 'epre-2016-17-ec'
         format: csv
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Eastern Cape.csv"
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Eastern Cape.csv"
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Western Cape.csv"
-        name: 'epre-2017-18-wc'
-        format: csv
-    - run: add_resource
-      parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Free State.csv"
-        name: epre-2017-18-fs
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Western Cape.csv"
+        name: 'epre-2016-17-wc'
         format: csv
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Gauteng.csv"
-        name: epre-2017-18-gt
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Free State.csv"
+        name: epre-2016-17-fs
         format: csv
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-KwaZulu-Natal.csv"
-        name: epre-2017-18-kzn
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Gauteng.csv"
+        name: epre-2016-17-gt
         format: csv
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Limpopo.csv"
-        name: epre-2017-18-lim
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-KwaZulu-Natal.csv"
+        name: epre-2016-17-kzn
         format: csv
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Mpumalanga.csv"
-        name: epre-2017-18-mpu
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Limpopo.csv"
+        name: epre-2016-17-lim
         format: csv
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-Northern Cape.csv"
-        name: epre-2017-18-nc
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Mpumalanga.csv"
+        name: epre-2016-17-mpu
         format: csv
     - run: add_resource
       parameters:
-        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2017-18-North West.csv"
-        name: epre-2017-18-nw
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-Northern Cape.csv"
+        name: epre-2016-17-nc
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2016-17-North West.csv"
+        name: epre-2016-17-nw
         format: csv
 
     - run: stream_remote_resources
 
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-ec
+        resources: epre-2016-17-ec
         fields:
           - operation: constant
             target: government
             with: Eastern Cape
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-wc
+        resources: epre-2016-17-wc
         fields:
           - operation: constant
             target: government
             with: Western Cape
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-fs
+        resources: epre-2016-17-fs
         fields:
           - operation: constant
             target: government
             with: Free State
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-gt
+        resources: epre-2016-17-gt
         fields:
           - operation: constant
             target: government
             with: Gauteng
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-kzn
+        resources: epre-2016-17-kzn
         fields:
           - operation: constant
             target: government
             with: KwaZulu-Natal
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-lim
+        resources: epre-2016-17-lim
         fields:
           - operation: constant
             target: government
             with: Limpopo
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-mpu
+        resources: epre-2016-17-mpu
         fields:
           - operation: constant
             target: government
             with: Mpumalanga
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-nc
+        resources: epre-2016-17-nc
         fields:
           - operation: constant
             target: government
             with: Northern Cape
     - run: add_computed_field
       parameters:
-        resources: epre-2017-18-nw
+        resources: epre-2016-17-nw
         fields:
           - operation: constant
             target: government
@@ -126,4 +126,4 @@ epre-subprogrammes-2017-18:
 
     - run: dump.to_path
       parameters:
-        out-path: 'epre-subprogrammes-2017-18'
+        out-path: 'epre-subprogrammes-2016-17'
