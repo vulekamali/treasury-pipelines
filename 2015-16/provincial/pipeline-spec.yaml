@@ -1,0 +1,129 @@
+epre-subprogrammes-2015-16:
+  title: EPRE Subprogrammes 2015-16
+  description: Data per year, provided in metric tons per capita.
+  pipeline:
+    - run: add_metadata
+      parameters:
+        title: EPRE Subprogrammes 2015-16
+        name: 'epre-2015-16-subprogrammes'
+
+    - run: add_resource
+      parameters:
+        name: 'epre-2015-16-ec'
+        format: csv
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Eastern Cape.csv"
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Western Cape.csv"
+        name: 'epre-2015-16-wc'
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Free State.csv"
+        name: epre-2015-16-fs
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Gauteng.csv"
+        name: epre-2015-16-gt
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-KwaZulu-Natal.csv"
+        name: epre-2015-16-kzn
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Limpopo.csv"
+        name: epre-2015-16-lim
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Mpumalanga.csv"
+        name: epre-2015-16-mpu
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-Northern Cape.csv"
+        name: epre-2015-16-nc
+        format: csv
+    - run: add_resource
+      parameters:
+        url: "file://../../../fiscal-data-package/epre-scrape-2018-10-18/epre-subprogrammes-2015-16-North West.csv"
+        name: epre-2015-16-nw
+        format: csv
+
+    - run: stream_remote_resources
+
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-ec
+        fields:
+          - operation: constant
+            target: government
+            with: Eastern Cape
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-wc
+        fields:
+          - operation: constant
+            target: government
+            with: Western Cape
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-fs
+        fields:
+          - operation: constant
+            target: government
+            with: Free State
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-gt
+        fields:
+          - operation: constant
+            target: government
+            with: Gauteng
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-kzn
+        fields:
+          - operation: constant
+            target: government
+            with: KwaZulu-Natal
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-lim
+        fields:
+          - operation: constant
+            target: government
+            with: Limpopo
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-mpu
+        fields:
+          - operation: constant
+            target: government
+            with: Mpumalanga
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-nc
+        fields:
+          - operation: constant
+            target: government
+            with: Northern Cape
+    - run: add_computed_field
+      parameters:
+        resources: epre-2015-16-nw
+        fields:
+          - operation: constant
+            target: government
+            with: North West
+
+    - run: department_names
+      parameters:
+        sphere: provincial
+        financial_year: 2018-19
+
+    - run: dump.to_path
+      parameters:
+        out-path: 'epre-subprogrammes-2015-16'
