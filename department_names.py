@@ -38,7 +38,8 @@ def modify_datapackage(datapackage, parameters, stats):
 def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
-    department_slug = slugify(row['department'])
+    col_key = parameters.get('department_column', 'department')
+    department_slug = slugify(col_key)
     sphere = parameters['sphere']
     if sphere == 'national':
         government_name = 'South Africa'
@@ -49,12 +50,12 @@ def process_row(row, row_index,
     authoritative_department_name \
         = department_names[sphere][government_name].get(department_slug, None)
     if authoritative_department_name:
-        row['department'] = authoritative_department_name
+        row[col_key] = authoritative_department_name
     else:
-        warning_key = (government_name, row['department'])
+        warning_key = (government_name, row[col_key])
         if warning_key not in warned:
             logging.warn("No authoritative department name found for %s - %s",
-                         government_name, row['department'])
+                         government_name, row[col_key])
             warned[warning_key] = True
     return row
 

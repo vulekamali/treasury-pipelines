@@ -1,10 +1,10 @@
-load-and-save:
+aene-2018-19:
   title: Original and adjusted budget spending per department
   description: Data per department, provided for original and adjusted numbers
   pipeline:
   - run: load
     parameters:
-      from: './loadme.csv'
+      from: './aene18_19.csv'
       name: 'origin-data'
       format: 'csv'
   - run: delete_fields
@@ -46,10 +46,14 @@ load-and-save:
           replace: Total
         - find: ^(Adjusted appropriation)
           replace: Total
-
+  - run: department_names
+    parameters:
+      sphere: national
+      financial_year: 2018-19
+      department_column: 'Department'
   - run: dump_to_path
     parameters:
-      out-path: './result-data.csv'
+      out-path: './processed'
       format: 'csv'
 
 
