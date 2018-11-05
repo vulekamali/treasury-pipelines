@@ -51,6 +51,9 @@ aene-2018-19:
       sphere: national
       financial_year: 2018-19
       department_column: 'Department'
+  - run: clean_value_field
+    parameters:
+      value_field: 'Value'
   - run: dump_to_path
     parameters:
       out-path: './processed'
