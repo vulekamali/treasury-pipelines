@@ -3,7 +3,6 @@ from pprint import pformat
 from slugify import slugify
 import logging
 import os
-import re
 import requests
 import yaml
 
@@ -38,8 +37,8 @@ def modify_datapackage(datapackage, parameters, stats):
 def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
-    col_key = parameters.get('department_column', 'department')
-    department_slug = slugify(col_key)
+    column_key = parameters.get('department_column', 'department')
+    department_slug = slugify(row[column_key], to_lower=True)
     sphere = parameters['sphere']
     if sphere == 'national':
         government_name = 'South Africa'
@@ -50,12 +49,12 @@ def process_row(row, row_index,
     authoritative_department_name \
         = department_names[sphere][government_name].get(department_slug, None)
     if authoritative_department_name:
-        row[col_key] = authoritative_department_name
+        row[column_key] = authoritative_department_name
     else:
-        warning_key = (government_name, row[col_key])
+        warning_key = (government_name, row[column_key])
         if warning_key not in warned:
-            logging.warn("No authoritative department name found for %s - %s",
-                         government_name, row[col_key])
+            logging.warn("No authoritative department name found for %s - %s (%s)",
+                         government_name, row[column_key], department_slug)
             warned[warning_key] = True
     return row
 

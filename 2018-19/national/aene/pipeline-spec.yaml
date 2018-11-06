@@ -1,15 +1,16 @@
 aene-2018-19:
-  title: Original and adjusted budget spending per department
-  description: Data per department, provided for original and adjusted numbers
+  title: Adjusted Estimates of National Expenditure
+  description: Main and Adjusted budget, with detail on the kind of adjustments.
   pipeline:
   - run: load
     parameters:
-      from: './aene18_19.csv'
-      name: 'origin-data'
-      format: 'csv'
+      from: "https://data.vulekamali.gov.za/dataset/ec02dddf-0be9-4569-b951-591e52cc81fe/resource/37c2f6f6-7cdb-4c7f-bd4f-026a0334076a/download/nat-aene-2018-19.xlsx"
+      name: 'aene-2018-19'
+      format: 'xlsx'
+    cache: true
   - run: delete_fields
     parameters:
-      resources: origin-data
+      resources: aene-2018-19
       fields:
       - Source
       - BudYear
@@ -23,14 +24,14 @@ aene-2018-19:
       - GFS3
   - run: add_computed_field
     parameters:
-      resources: origin-data
+      resources: aene-2018-19
       fields:
       - operation: format
         target: Budget Phase
         with: '{FY_Descript}'
   - run: find_replace
     parameters:
-      resources: origin-data
+      resources: aene-2018-19
       fields:
       - name: FinYear
         patterns:
@@ -51,12 +52,10 @@ aene-2018-19:
       sphere: national
       financial_year: 2018-19
       department_column: 'Department'
-  - run: clean_value_field
+  - run: multiply
     parameters:
       value_field: 'Value'
   - run: dump_to_path
     parameters:
       out-path: './processed'
       format: 'csv'
-
-
