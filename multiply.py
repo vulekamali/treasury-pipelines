@@ -9,10 +9,11 @@ def modify_datapackage(datapackage, parameters, stats):
 def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
+    value_field = parameters.get('value_field', 'value')
     try:
-        if row['value'] == '':
-            row['value'] = '0'
-        row['value'] = float(row['value']) * 1000
+        if row[value_field] == '':
+            row[value_field] = '0'
+        row[value_field] = float(row[value_field]) * 1000
         return row
     except:
         logging.exception("Error with row %r", row)
