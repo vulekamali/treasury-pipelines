@@ -56,9 +56,9 @@ e.g.
 
 ```
 14 24,"Agriculture, Forestry and Fisheries",4,Trade Promotion and Market Access,2,International Relations and Trade,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Adjusted appropriation
-     14 24,"Agriculture, Forestry and Fisheries",4,Trade Promotion and Market Access,2,International Relations and Trade,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Voted (Main appropriation)
-     24 6,International Relations and Cooperation,5,International Transfers,2,Membership contribution,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Adjusted appropriation
-     24 6,International Relations and Cooperation,5,International Transfers,2,Membership contribution,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Voted (Main appropriation)
+14 24,"Agriculture, Forestry and Fisheries",4,Trade Promotion and Market Access,2,International Relations and Trade,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Voted (Main appropriation)
+24 6,International Relations and Cooperation,5,International Transfers,2,Membership contribution,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Adjusted appropriation
+24 6,International Relations and Cooperation,5,International Transfers,2,Membership contribution,Current,Transfers and subsidies,Foreign governments and international organisations,Foreign governments and international organisations,Foreign governments and international organisations,2017,Total,Voted (Main appropriation)
 ```
 
 In this case you should verify that the kind of duplication that's happening can be solved by summing all the duplicates, and adding the `join` processor's _deduplication_ mode.

@@ -76,8 +76,21 @@ aene-2017-18:
         name: aene-2017-18
         key: null
       fields:
-        Value:
-          name: Value
+        "VoteNo": {}
+        "Department": {}
+        "ProgNo": {}
+        "Programme": {}
+        "SprogNo": {}
+        "Subprogramme": {}
+        "Econ1": {}
+        "Econ2": {}
+        "Econ3": {}
+        "Econ4": {}
+        "Econ5": {}
+        "FinYear": {}
+        "FY_Descript": {}
+        "Budget Phase": {}
+        "Value":
           aggregate: sum
       full: true
   - run: multiply
