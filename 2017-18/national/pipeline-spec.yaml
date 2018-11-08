@@ -52,6 +52,34 @@ aene-2017-18:
       sphere: national
       financial_year: 2017-18
       department_column: 'Department'
+  - run: join
+    parameters:
+      source:
+        name: aene-2017-18
+        key:
+          - "VoteNo"
+          - "Department"
+          - "ProgNo"
+          - "Programme"
+          - "SprogNo"
+          - "Subprogramme"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "FY_Descript"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: aene-2017-18
+        key: null
+      fields:
+        Value:
+          name: Value
+          aggregate: sum
+      full: true
   - run: multiply
     parameters:
       value_field: 'Value'
