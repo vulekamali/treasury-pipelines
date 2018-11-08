@@ -1,0 +1,61 @@
+aene-2017-18:
+  title: Adjusted Estimates of National Expenditure
+  description: Main and Adjusted budget, with detail on the kind of adjustments.
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://data.vulekamali.gov.za/dataset/b89c2250-8220-4cb7-ada5-1ccb8c94814c/resource/64695f8d-ffd6-4298-8b10-bdb9f98f43e1/download/nat-aene-2017-18.xlsx"
+      name: 'aene-2017-18'
+      format: 'xlsx'
+    cache: true
+  - run: delete_fields
+    parameters:
+      resources: aene-2017-18
+      fields:
+      - Source
+      - BudYear
+      - Province
+      - ValueIndi
+      - Combo
+      - FG1
+      - FG2
+      - GFS1
+      - GFS2
+      - GFS3
+  - run: add_computed_field
+    parameters:
+      resources: aene-2017-18
+      fields:
+      - operation: format
+        target: Budget Phase
+        with: '{FY_Descript}'
+  - run: find_replace
+    parameters:
+      resources: aene-2017-18
+      fields:
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: ^((?!Voted \(Main appropriation\)).)*$
+          replace: Adjusted appropriation
+      - name: FY_Descript
+        patterns:
+        - find: ^(Voted \(Main appropriation\))
+          replace: Total
+        - find: ^(Adjusted appropriation)
+          replace: Total
+  - run: department_names
+    parameters:
+      sphere: national
+      financial_year: 2017-18
+      department_column: 'Department'
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
