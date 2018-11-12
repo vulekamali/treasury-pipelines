@@ -22,6 +22,41 @@ aene-2017-18:
       - GFS1
       - GFS2
       - GFS3
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 41
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 42
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 43
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 44
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 45
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 46
+  - run: filter
+    parameters:
+      resources: aene-2017-18
+      out:
+        - VoteNo: 47
   - run: add_computed_field
     parameters:
       resources: aene-2017-18
