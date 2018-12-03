@@ -57,9 +57,9 @@ are-2017-18:
       - name: Budget Phase
         patterns:
         - find: ^(Actual Payments)
-          replace: Audit Outcome
-        - find: ^(Virement and shifting of funds)
-          replace: Final Appropriation
+          replace: "Audit Outcome"
+        - find: ^Virement and shifting of funds
+          replace: "Final Appropriation"
       - name: FY_Descript
         patterns:
         - find: ^(Actual Payments)
@@ -117,6 +117,7 @@ are-2017-18:
           aggregate: sum
       full: true
 
+  # Rename FY_Descript to Amount Kind
   - run: add_computed_field
     parameters:
       resources: are-2017-18
