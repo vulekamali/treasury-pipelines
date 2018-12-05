@@ -48,26 +48,26 @@ are-2016-17:
         with: '{FY_Descript}'
   - run: find_replace
     parameters:
-      resources: are-2016-17
+      resources: are-2017-18
       fields:
-      - name: FinYear
-        patterns:
-        - find: (\d{4})_\d{2}
-          replace: \1
-      - name: Budget Phase
-        patterns:
-        - find: ^(Actual Payments)
-          replace: Audit Outcome
-        - find: ^(Virement and shifting of funds)
-          replace: Final Appropriation
-      - name: FY_Descript
-        patterns:
-        - find: ^(Actual Payments)
-          replace: Total
-        - find: ^(Adjusted Appropriation)
-          replace: Total
-        - find: ^(Final Appropriation)
-          replace: Total
+        - name: FinYear
+          patterns:
+            - find: (\d{4})_\d{2}
+              replace: \1
+        - name: Budget Phase
+          patterns:
+            - find: ^(Actual Payments)
+              replace: "Audit Outcome"
+            - find: ^Virement and shifting of funds
+              replace: "Final Appropriation"
+        - name: FY_Descript
+          patterns:
+            - find: ^(Actual Payments)
+              replace: Total
+            - find: ^(Adjusted Appropriation)
+              replace: Total
+            - find: ^(Final Appropriation)
+              replace: Total
   - run: department_names
     parameters:
       sphere: national
