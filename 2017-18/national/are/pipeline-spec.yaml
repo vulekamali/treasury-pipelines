@@ -14,7 +14,6 @@ are-2017-18:
       resources: are-2017-18
       fields:
       - BudYear
-      - Province
       - ValueIndi
       - Combo
       - FG1
@@ -73,6 +72,14 @@ are-2017-18:
       sphere: national
       financial_year: 2017-18
       department_column: 'Department'
+  - run: programme_names
+    parameters:
+      sphere: national
+      financial_year: 2017-18
+      programme_name_column: 'Programme'
+      programme_number_column: 'ProgNo'
+      department_column: 'Department'
+      government_column: 'Province'
   - run: join
     parameters:
       source:
@@ -80,6 +87,7 @@ are-2017-18:
         key:
           - "Source"
           - "VoteNo"
+          - "Province"
           - "Department"
           - "ProgNo"
           - "Programme"
@@ -100,6 +108,7 @@ are-2017-18:
       fields:
         "Source": {}
         "VoteNo": {}
+        "Province": {}
         "Department": {}
         "ProgNo": {}
         "Programme": {}
