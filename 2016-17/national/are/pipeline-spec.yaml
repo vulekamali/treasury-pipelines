@@ -14,7 +14,6 @@ are-2016-17:
       resources: are-2016-17
       fields:
       - BudYear
-      - Province
       - ValueIndi
       - Combo
       - FG1
@@ -48,31 +47,39 @@ are-2016-17:
         with: '{FY_Descript}'
   - run: find_replace
     parameters:
-      resources: are-2017-18
+      resources: are-2016-17
       fields:
-        - name: FinYear
-          patterns:
-            - find: (\d{4})_\d{2}
-              replace: \1
-        - name: Budget Phase
-          patterns:
-            - find: ^(Actual Payments)
-              replace: "Audit Outcome"
-            - find: ^Virement and shifting of funds
-              replace: "Final Appropriation"
-        - name: FY_Descript
-          patterns:
-            - find: ^(Actual Payments)
-              replace: Total
-            - find: ^(Adjusted Appropriation)
-              replace: Total
-            - find: ^(Final Appropriation)
-              replace: Total
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: ^(Actual Payments)
+          replace: "Audit Outcome"
+        - find: ^Virement and shifting of funds
+          replace: "Final Appropriation"
+      - name: FY_Descript
+        patterns:
+        - find: ^(Actual Payments)
+          replace: Total
+        - find: ^(Adjusted Appropriation)
+          replace: Total
+        - find: ^(Final Appropriation)
+          replace: Total
   - run: department_names
     parameters:
       sphere: national
       financial_year: 2016-17
       department_column: 'Department'
+  - run: programme_names
+    parameters:
+      sphere: national
+      financial_year: 2016-17
+      programme_name_column: 'Programme'
+      programme_number_column: 'ProgNo'
+      department_column: 'Department'
+      government_column: 'Province'
   - run: join
     parameters:
       source:
@@ -80,6 +87,7 @@ are-2016-17:
         key:
           - "Source"
           - "VoteNo"
+          - "Province"
           - "Department"
           - "ProgNo"
           - "Programme"
@@ -100,6 +108,7 @@ are-2016-17:
       fields:
         "Source": {}
         "VoteNo": {}
+        "Province": {}
         "Department": {}
         "ProgNo": {}
         "Programme": {}
@@ -117,6 +126,7 @@ are-2016-17:
           aggregate: sum
       full: true
 
+  # Rename FY_Descript to Amount Kind
   - run: add_computed_field
     parameters:
       resources: are-2016-17
