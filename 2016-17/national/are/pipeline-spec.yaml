@@ -77,7 +77,6 @@ are-2016-17:
       sphere: national
       financial_year: 2016-17
       programme_name_column: 'Programme'
-      programme_number_column: 'ProgNo'
       department_column: 'Department'
       government_column: 'Province'
   - run: join
@@ -139,6 +138,7 @@ are-2016-17:
       resources: are-2016-17
       fields:
         - FY_Descript
+        - Province
 
   - run: multiply
     parameters:

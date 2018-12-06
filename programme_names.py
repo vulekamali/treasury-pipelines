@@ -37,7 +37,7 @@ def modify_datapackage(datapackage, parameters, stats):
         government = row[0]
         department = row[1]
         programme_name = row[2]
-        programme_number = row[3]
+        programme_name_slug = slugify(programme_name, to_lower=True)
         try:
             programme_names[sphere][government]
         except KeyError:
@@ -46,7 +46,7 @@ def modify_datapackage(datapackage, parameters, stats):
             programme_names[sphere][government][department]
         except KeyError:
             programme_names[sphere][government][department] = {}
-        programme_names[sphere][government][department][programme_number] = programme_name
+        programme_names[sphere][government][department][programme_name_slug] = programme_name
 
     logging.info(programme_names)
     return datapackage
@@ -56,7 +56,6 @@ def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
     prog_name_key = parameters.get('programme_name_column', 'Programme')
-    prog_no_key = parameters.get('programme_number_column', 'ProgNo')
     dept_name_key = parameters.get('department_column', 'Department')
     gov_key = parameters.get('government_column', 'Province')
     sphere = parameters['sphere']
@@ -70,16 +69,16 @@ def process_row(row, row_index,
 
     department_name = row[dept_name_key]
     auth_prog_name \
-        = programme_names[sphere][government_name][department_name].get(str(row[prog_no_key]), None)
+        = programme_names[sphere][government_name][department_name].\
+        get(slugify(row[prog_name_key], to_lower=True), None)
     if auth_prog_name:
         row[prog_name_key] = auth_prog_name
     else:
         warning_key = (government_name, row[dept_name_key], row[prog_name_key])
         if warning_key not in warned:
-            logging.warning("No authoritative programme name found for %s - %s - %s (#%s)",
-                            government_name, row[dept_name_key], row[prog_name_key], row[prog_no_key])
-            logging.info("Tried: programme_names[%s][%s][%s].get(row[%s] = %s)" %
-                         (sphere, government_name, department_name, prog_no_key, row[prog_no_key]))
+            logging.warning("No authoritative programme name found for %s - %s - %s (%s)",
+                            government_name, row[dept_name_key], row[prog_name_key],
+                            slugify(row[prog_name_key], to_lower=True))
             warned[warning_key] = True
     return row
 
