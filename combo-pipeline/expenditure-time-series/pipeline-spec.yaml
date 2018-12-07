@@ -7,32 +7,53 @@ expenditure-time-series:
       from: "https://data.vulekamali.gov.za/dataset/3909f64d-b35d-4f71-af61-93148d943580/resource/977f2471-53ec-4643-b054-bb59a1eba511/download/are-2017-18.csv"
       name: 'are-2017-18'
       format: 'csv'
+  # Remove all non-relevant years for this dataset
+  - run: filter
+    parameters:
+      resources: are-2017-18
+      in:
+        - FinYear: '2017'
   - run: load
     parameters:
       from: "https://data.vulekamali.gov.za/dataset/5acabeef-4140-4f74-8178-885186677fd3/resource/b2135502-a76e-4d24-bd88-7c5447834d1a/download/are-2016-17.csv"
       name: 'are-2016-17'
       format: 'csv'
-  - run: load
+  - run: filter
     parameters:
-      from: "https://data.vulekamali.gov.za/dataset/e75e7fe3-e80d-421d-95ab-aefd3dbc7819/resource/f5561bdf-2528-4361-9669-32ab64e980ce/download/are-2015-16.csv"
-      name: 'are-2015-16'
-      format: 'csv'
-  - run: load
-    parameters:
-      from: "https://data.vulekamali.gov.za/dataset/estimates-of-national-expenditure-2017-18/resource/3653542a-87f1-4089-9897-79a1b0392ebb"
-      name: 'ene-2017-18'
-      format: 'csv'
-  - run: load
-    parameters:
-      from: "https://data.vulekamali.gov.za/dataset/adjusted-estimates-of-national-expenditure-2017-18/resource/23275a9c-909d-454f-8c70-7e61205bb49d"
-      name: 'aene-2017-18'
-      format: 'csv'
+      resources: are-2016-17
+      in:
+        - FinYear: '2016'
+
+#  - run: load
+#    parameters:
+#      from: "https://data.vulekamali.gov.za/dataset/e75e7fe3-e80d-421d-95ab-aefd3dbc7819/resource/f5561bdf-2528-4361-9669-32ab64e980ce/download/are-2015-16.csv"
+#      name: 'are-2015-16'
+#      format: 'csv'
+#  - run: load
+#    parameters:
+#      from: "https://data.vulekamali.gov.za/dataset/estimates-of-national-expenditure-2017-18/resource/3653542a-87f1-4089-9897-79a1b0392ebb"
+#      name: 'ene-2017-18'
+#      format: 'csv'
+#  - run: load
+#    parameters:
+#      from: "https://data.vulekamali.gov.za/dataset/adjusted-estimates-of-national-expenditure-2017-18/resource/23275a9c-909d-454f-8c70-7e61205bb49d"
+#      name: 'aene-2017-18'
+#      format: 'csv'
+
   # clean each dataset (remove non-relevant financial years for a dataset of a given year etc.)
   # add missing fields for each dataset (e.g. 'Source' for NAT ENE 2016, old datasets that may still get updated)
+
   # concatenate all the datasets into a new target datasets
   - run: concatenate
     parameters:
+      target:
+        name: expenditure-time-series
+        path: data/expenditure-time-series.csv
       fields:
-#        FinYear: ['finyear', 'Finyear']
         Value: ['value']
-#        Programme: ['programme']
+        FinYear: ['finyear']
+        Programme: ['programme']
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
