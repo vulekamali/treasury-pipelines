@@ -2,6 +2,142 @@ expenditure-time-series:
   title: Expenditure Time Series
   description: Combined dataset which consists of ENE, AENE and ARE datasets of all financial years.
   pipeline:
+    # ENE must be loaded prior to loading AR(E) otherwise it results in a ValidationError
+    # likely due to the schema being inferred from the first resource loaded
+
+    #### ENE
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/f65e577e-1dc3-4b68-9868-a97b84a950e8/resource/ca4b1281-fb9b-4ab2-9e2a-b78a978a98a1/download/estimates-of-national-expenditure-south-africa-2018-19.csv'
+        name: 'ene-2018-19'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2018-19
+        in:
+          - financial_year: '2018'
+    - run: add_computed_field
+      parameters:
+        resources: ene-2018-19
+        fields:
+          - operation: format
+            target: Amount Kind
+            with: 'Total'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/0cd8235c-d603-4bb5-8695-475a54e053e8/resource/3653542a-87f1-4089-9897-79a1b0392ebb/download/estimates-of-national-expenditure-south-africa-2017-18.csv'
+        name: 'ene-2017-18'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2017-18
+        in:
+          - financial_year: '2017'
+    - run: add_computed_field
+      parameters:
+        resources: ene-2017-18
+        fields:
+          -
+            operation: format
+            target: Amount Kind
+            with: 'Total'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/3895fbe6-4f1d-4ec3-a00c-b480db002d26/resource/f04d6407-7e58-47d6-8b20-ccfe8b744cc5/download/estimates-of-national-expenditure-south-africa-2016-17.csv'
+        name: 'ene-2016-17'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2016-17
+        in:
+          - financial_year: '2016'
+    - run: add_computed_field
+      parameters:
+        resources: ene-2016-17
+        fields:
+          -
+            operation: format
+            target: Amount Kind
+            with: 'Total'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/ce3e6738-a5eb-422d-85ef-346bb6b09fc5/resource/f956616e-f773-4ba7-984a-56595c732bc9/download/estimates-of-national-expenditure-south-africa-2015-16.csv'
+        name: 'ene-2015-16'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2015-16
+        in:
+          - financial_year: '2015'
+    - run: add_computed_field
+      parameters:
+        resources: ene-2015-16
+        fields:
+          -
+            operation: format
+            target: Amount Kind
+            with: 'Total'
+
+    #### AENE
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/aene-2018-19-v2/final/data/aene-2018-19.csv'
+        name: 'aene-2018-19'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: aene-2018-19
+        in:
+          - finyear: '2018'
+    - run: filter
+      parameters:
+        resources: aene-2018-19
+        out:
+          - budget_phase: 'Voted (Main appropriation)'
+
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/aene-2017-18-v3/final/data/aene-2017-18.csv'
+        name: 'aene-2017-18'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: aene-2017-18
+        in:
+          - finyear: '2017'
+    - run: filter
+      parameters:
+        resources: aene-2017-18
+        out:
+          - budget_phase: 'Voted (Main appropriation)'
+
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/adjusted-estimates-of-national-expenditure-2016-17/final/data/aene-2016-17.csv'
+        name: 'aene-2016-17'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: aene-2016-17
+        in:
+          - finyear: '2016'
+    - run: filter
+      parameters:
+        resources: aene-2016-17
+        out:
+          - budget_phase: 'Voted (Main appropriation)'
+
+    #### ARE
     - run: load
       parameters:
         from: 'https://data.vulekamali.gov.za/dataset/3909f64d-b35d-4f71-af61-93148d943580/resource/977f2471-53ec-4643-b054-bb59a1eba511/download/are-2017-18.csv'
@@ -13,6 +149,12 @@ expenditure-time-series:
         resources: are-2017-18
         in:
           - FinYear: '2017'
+    - run: filter
+      parameters:
+        resources: are-2017-18
+        out:
+          - Budget Phase: 'Adjusted Appropriation'
+
     - run: load
       parameters:
         from: 'https://data.vulekamali.gov.za/dataset/5acabeef-4140-4f74-8178-885186677fd3/resource/b2135502-a76e-4d24-bd88-7c5447834d1a/download/are-2016-17.csv'
@@ -24,6 +166,12 @@ expenditure-time-series:
         resources: are-2016-17
         in:
           - FinYear: '2016'
+    - run: filter
+      parameters:
+        resources: are-2016-17
+        out:
+          - Budget Phase: 'Adjusted Appropriation'
+
     - run: load
       parameters:
         from: 'https://data.vulekamali.gov.za/dataset/e75e7fe3-e80d-421d-95ab-aefd3dbc7819/resource/f5561bdf-2528-4361-9669-32ab64e980ce/download/are-2015-16.csv'
@@ -35,21 +183,25 @@ expenditure-time-series:
         resources: are-2015-16
         in:
           - FinYear: '2015'
-
-    - run: load
+    - run: filter
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/0cd8235c-d603-4bb5-8695-475a54e053e8/resource/3653542a-87f1-4089-9897-79a1b0392ebb/download/estimates-of-national-expenditure-south-africa-2017-18.csv'
-        name: 'ene-2017-18'
-        format: 'csv'
-    - run: load
-      parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/aene-2017-18-v3/final/data/aene-2017-18.csv'
-        name: 'aene-2017-18'
-        format: 'csv'
-      cache: false
+        resources: are-2015-16
+        out:
+          - Budget Phase: 'Adjusted Appropriation'
 
     - run: concatenate
       parameters:
+        sources:
+          - are-2015-16
+          - are-2016-17
+          - are-2017-18
+          - ene-2015-16
+          - ene-2016-17
+          - ene-2017-18
+          - ene-2018-19
+          - aene-2016-17
+          - aene-2017-18
+          - aene-2018-19
         target:
           name: expenditure-time-series
           path: data/expenditure-time-series.csv
@@ -61,14 +213,14 @@ expenditure-time-series:
           Econ3: ['econ3', 'economic_classification_3']
           Econ4: ['econ4', 'economic_classification_4']
           Econ5: ['econ5', 'economic_classification_5']
-          ProgNo: ['progno', 'Progno', 'programme_number']
+          Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
-          SprogNo: ['sprogno', 'Sprogno', 'subprogramme_number']
+          Subprogramme Number: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number']
           Subprogramme: ['subprogramme']
-          VoteNo: ['voteno', 'Voteno', 'vote_number']
+          Vote Number: ['voteno', 'Voteno', 'VoteNo', 'vote_number']
           Amount Kind: ['amount kind', 'fy_descript']
           Value: ['value']
-          FinYear: ['finyear', 'financial_year']
+          Financial Year: ['finyear', 'FinYear', 'financial_year']
       cache: false
     - run: dump_to_path
       parameters:
