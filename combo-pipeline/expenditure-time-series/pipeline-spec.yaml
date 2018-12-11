@@ -17,13 +17,6 @@ expenditure-time-series:
         resources: ene-2018-19
         in:
           - financial_year: '2018'
-    - run: add_computed_field
-      parameters:
-        resources: ene-2018-19
-        fields:
-          - operation: format
-            target: Amount Kind
-            with: 'Total'
 
     - run: load
       parameters:
@@ -36,14 +29,6 @@ expenditure-time-series:
         resources: ene-2017-18
         in:
           - financial_year: '2017'
-    - run: add_computed_field
-      parameters:
-        resources: ene-2017-18
-        fields:
-          -
-            operation: format
-            target: Amount Kind
-            with: 'Total'
 
     - run: load
       parameters:
@@ -56,14 +41,6 @@ expenditure-time-series:
         resources: ene-2016-17
         in:
           - financial_year: '2016'
-    - run: add_computed_field
-      parameters:
-        resources: ene-2016-17
-        fields:
-          -
-            operation: format
-            target: Amount Kind
-            with: 'Total'
 
     - run: load
       parameters:
@@ -78,7 +55,11 @@ expenditure-time-series:
           - financial_year: '2015'
     - run: add_computed_field
       parameters:
-        resources: ene-2015-16
+        resources:
+          - ene-2015-16
+          - ene-2016-17
+          - ene-2017-18
+          - ene-2018-19
         fields:
           -
             operation: format
@@ -97,11 +78,6 @@ expenditure-time-series:
         resources: aene-2018-19
         in:
           - finyear: '2018'
-    - run: filter
-      parameters:
-        resources: aene-2018-19
-        out:
-          - budget_phase: 'Voted (Main appropriation)'
 
     - run: load
       parameters:
@@ -114,11 +90,6 @@ expenditure-time-series:
         resources: aene-2017-18
         in:
           - finyear: '2017'
-    - run: filter
-      parameters:
-        resources: aene-2017-18
-        out:
-          - budget_phase: 'Voted (Main appropriation)'
 
     - run: load
       parameters:
@@ -133,7 +104,10 @@ expenditure-time-series:
           - finyear: '2016'
     - run: filter
       parameters:
-        resources: aene-2016-17
+        resources:
+          - aene-2016-17
+          - aene-2017-18
+          - aene-2018-19
         out:
           - budget_phase: 'Voted (Main appropriation)'
 
@@ -149,11 +123,6 @@ expenditure-time-series:
         resources: are-2017-18
         in:
           - FinYear: '2017'
-    - run: filter
-      parameters:
-        resources: are-2017-18
-        out:
-          - Budget Phase: 'Adjusted Appropriation'
 
     - run: load
       parameters:
@@ -166,11 +135,6 @@ expenditure-time-series:
         resources: are-2016-17
         in:
           - FinYear: '2016'
-    - run: filter
-      parameters:
-        resources: are-2016-17
-        out:
-          - Budget Phase: 'Adjusted Appropriation'
 
     - run: load
       parameters:
@@ -185,7 +149,10 @@ expenditure-time-series:
           - FinYear: '2015'
     - run: filter
       parameters:
-        resources: are-2015-16
+        resources:
+          - are-2015-16
+          - are-2016-17
+          - are-2017-18
         out:
           - Budget Phase: 'Adjusted Appropriation'
 
