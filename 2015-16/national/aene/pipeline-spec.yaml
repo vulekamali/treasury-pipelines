@@ -1,0 +1,106 @@
+aene-2015-16:
+  title: Adjusted Estimates of National Expenditure
+  description: Main and Adjusted budget, with detail on the kind of adjustments.
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/late-2018-structure-shares/NAT+AENE+2015-16.xlsx"
+      name: 'aene-2015-16'
+      format: 'xlsx'
+    cache: true
+  - run: delete_fields
+    parameters:
+      resources: aene-2015-16
+      fields:
+      - Source
+      - BudYear
+      - Province
+      - ValueIndi
+      - Combo
+      - FG1
+      - FG2
+      - GFS1
+      - GFS2
+      - GFS3
+  - run: add_computed_field
+    parameters:
+      resources: aene-2015-16
+      fields:
+      - operation: format
+        target: Budget Phase
+        with: '{FY_Descript}'
+  - run: find_replace
+    parameters:
+      resources: aene-2015-16
+      fields:
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: ^((?!Voted \(Main appropriation\)).)*$
+          replace: Adjusted appropriation
+      - name: FY_Descript
+        patterns:
+        - find: ^(Voted \(Main appropriation\))
+          replace: Total
+        - find: ^(Adjusted appropriation)
+          replace: Total
+      - name: Subprogramme
+        patterns:
+          - find: 0
+            replace: '0'
+  - run: department_names
+    parameters:
+      sphere: national
+      financial_year: 2015-16
+      department_column: 'Department'
+  - run: join
+    parameters:
+      source:
+        name: aene-2015-16
+        key:
+          - "VoteNo"
+          - "Department"
+          - "ProgNo"
+          - "Programme"
+          - "SprogNo"
+          - "Subprogramme"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "FY_Descript"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: aene-2015-16
+        key: null
+      fields:
+        "VoteNo": {}
+        "Department": {}
+        "ProgNo": {}
+        "Programme": {}
+        "SprogNo": {}
+        "Subprogramme": {}
+        "Econ1": {}
+        "Econ2": {}
+        "Econ3": {}
+        "Econ4": {}
+        "Econ5": {}
+        "FinYear": {}
+        "FY_Descript": {}
+        "Budget Phase": {}
+        "Value":
+          aggregate: sum
+      full: true
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'

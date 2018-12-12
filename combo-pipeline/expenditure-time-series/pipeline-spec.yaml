@@ -102,6 +102,26 @@ expenditure-time-series:
         resources: aene-2016-17
         in:
           - finyear: '2016'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/fe97d4dd-3cab-4fa8-911d-dee89a92489c/resource/4a675d47-a21f-4e1f-863d-f978e70b9a81/download/aene-2015-16.csv'
+        name: 'aene-2015-16'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: aene-2015-16
+        in:
+          - FinYear: '2015'
+
+    - run: filter
+      parameters:
+        resources:
+          - aene-2015-16
+        out:
+          - Budget Phase: 'Voted (Main appropriation)'
+
     - run: filter
       parameters:
         resources:
@@ -185,7 +205,7 @@ expenditure-time-series:
           Subprogramme Number: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number']
           Subprogramme: ['subprogramme']
           Vote Number: ['voteno', 'Voteno', 'VoteNo', 'vote_number']
-          Amount Kind: ['amount kind', 'fy_descript']
+          Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
           Value: ['value']
           Financial Year: ['finyear', 'FinYear', 'financial_year']
       cache: false
