@@ -119,12 +119,6 @@ expenditure-time-series:
       parameters:
         resources:
           - aene-2015-16
-        out:
-          - Budget Phase: 'Voted (Main appropriation)'
-
-    - run: filter
-      parameters:
-        resources:
           - aene-2016-17
           - aene-2017-18
           - aene-2018-19
@@ -186,6 +180,7 @@ expenditure-time-series:
           - ene-2016-17
           - ene-2017-18
           - ene-2018-19
+          - aene-2015-16
           - aene-2016-17
           - aene-2017-18
           - aene-2018-19
