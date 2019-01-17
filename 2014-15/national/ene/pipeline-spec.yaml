@@ -47,6 +47,18 @@ ene-2014-15:
         patterns:
         - find: "MTEF"
           replace: "Medium Term Estimates"
+      - name: FG1
+        patterns:
+        - find: 0
+          replace: "0"
+      - name: FG2
+        patterns:
+        - find: 0
+          replace: "0"
+      - name: Programme
+        patterns:
+        - find: 0
+          replace: "0"
 
   - run: estimates_of_expenditure_tabled_year_phase
     parameters:
