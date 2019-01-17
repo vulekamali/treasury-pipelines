@@ -15,6 +15,37 @@ ene-2014-15:
       financial_year: 2014-15
       department_column: 'Department'
 
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Est. under/(over)
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Other adjustments
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Revised estimate
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Roll-overs
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: "U&U"
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Virement
+
   - run: add_computed_field
     parameters:
       resources: ene-2014-15
@@ -62,7 +93,7 @@ ene-2014-15:
 
   - run: estimates_of_expenditure_tabled_year_phase
     parameters:
-      financial_year: 2014
+      financial_year: "2014"
 
   - run: delete_fields
     parameters:

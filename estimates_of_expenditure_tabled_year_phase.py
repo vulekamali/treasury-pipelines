@@ -2,6 +2,7 @@
 
 from datapackage_pipelines.wrapper import process
 
+import logging
 
 def modify_datapackage(datapackage, parameters, stats):
     return datapackage
@@ -10,7 +11,7 @@ def modify_datapackage(datapackage, parameters, stats):
 def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
-    financial_year = parameters.get('value_field', 'value')
+    financial_year = parameters.get('financial_year')
 
     if row['Budget Phase'] == 'Medium Term Estimates' and row['FinYear'] == financial_year:
         row['Budget Phase'] = 'Main appropriation'
