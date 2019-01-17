@@ -90,7 +90,6 @@ ene-2014-15:
           - "Econ4"
           - "Econ5"
           - "FinYear"
-          - "FY_Descript"
           - "Budget Phase"
         delete: yes
       target:
@@ -111,7 +110,6 @@ ene-2014-15:
         "Econ4": {}
         "Econ5": {}
         "FinYear": {}
-        "FY_Descript": {}
         "Budget Phase": {}
         "Value":
           aggregate: sum
