@@ -9,10 +9,6 @@ ene-2014-15:
       format: 'xlsx'
     cache: true
 
-  - run: multiply
-    parameters:
-      value_field: 'Value'
-
   - run: department_names
     parameters:
       sphere: national
@@ -52,7 +48,7 @@ ene-2014-15:
         - find: "MTEF"
           replace: "Medium Term Estimates"
 
-  - run: estimates_of_expenditure_decode_fy_descript
+  - run: estimates_of_expenditure_tabled_year_phase
     parameters:
       financial_year: 2014
 
@@ -114,6 +110,20 @@ ene-2014-15:
         "Value":
           aggregate: sum
       full: true
+
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+
+  # Effectively floor as a poor man's round
+  - run: find_replace
+    parameters:
+      resources: ene-2014-15
+      fields:
+        - name: Value
+          patterns:
+            - find: (\d+)\.\d+
+              replace: \1
 
   - run: dump_to_path
     parameters:
