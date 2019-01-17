@@ -90,6 +90,7 @@ expenditure-time-series:
         resources: aene-2017-18
         in:
           - finyear: '2017'
+          - budget_phase: 'Adjusted appropriation'
 
     - run: load
       parameters:
@@ -119,6 +120,11 @@ expenditure-time-series:
       parameters:
         resources:
           - aene-2015-16
+        out:
+          - Budget Phase: 'Voted (Main appropriation)'
+    - run: filter
+      parameters:
+        resources:
           - aene-2016-17
           - aene-2017-18
           - aene-2018-19
@@ -161,6 +167,7 @@ expenditure-time-series:
         resources: are-2015-16
         in:
           - FinYear: '2015'
+
     - run: filter
       parameters:
         resources:
