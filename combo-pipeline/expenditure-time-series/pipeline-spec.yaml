@@ -114,14 +114,14 @@ expenditure-time-series:
       parameters:
         resources: aene-2015-16
         in:
-          - FinYear: '2015'
+          - finyear: '2015'
 
     - run: filter
       parameters:
         resources:
           - aene-2015-16
         out:
-          - Budget Phase: 'Voted (Main appropriation)'
+          - budget_phase: 'Voted (Main appropriation)'
     - run: filter
       parameters:
         resources:
