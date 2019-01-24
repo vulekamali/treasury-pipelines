@@ -86,10 +86,6 @@ ene-2015-16:
         patterns:
         - find: 0
           replace: "0"
-      - name: Programme
-        patterns:
-        - find: 0
-          replace: "0"
 
   - run: estimates_of_expenditure_tabled_year_phase
     parameters:
