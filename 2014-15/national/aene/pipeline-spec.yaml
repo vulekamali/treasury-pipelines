@@ -1,0 +1,166 @@
+aene-2014-15:
+  title: Adjusted Estimates of National Expenditure
+  description: Main and Adjusted budget, with detail on the kind of adjustments.
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/late-2018-structure-shares/NAT+AENE+2014-15.xlsx"
+      name: 'aene-2014-15'
+      format: 'xlsx'
+    cache: true
+  - run: delete_fields
+    parameters:
+      resources: aene-2014-15
+      fields:
+      - Source
+      - BudYear
+      - Province
+      - ValueIndi
+      - Combo
+      - GFS1
+      - GFS2
+      - GFS3
+  - run: add_computed_field
+    parameters:
+      resources: aene-2014-15
+      fields:
+      - operation: format
+        target: Budget Phase
+        with: '{FY_Descript}'
+  - run: find_replace
+    parameters:
+      resources: aene-2014-15
+      fields:
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: ^((?!Voted \(Main appropriation\)).)*$
+          replace: Adjusted appropriation
+      - name: FY_Descript
+        patterns:
+        - find: ^(Voted \(Main appropriation\))
+          replace: Total
+        - find: ^(Adjusted appropriation)
+          replace: Total
+      - name: Econ1
+        patterns:
+        - find: 0
+          replace: "0"
+  - run: department_names
+    parameters:
+      sphere: national
+      financial_year: 2014-15
+      department_column: 'Department'
+
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Announced in the budget speech
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Declared unspent funds
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Roll-overs
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Self-financing
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Shifting of functions between votes
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Shifting of functions within the vote
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Significant and unforeseeable economic and financial events
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Unforeseeable/unavoidable
+  - run: filter
+    parameters:
+      resources: ene-2014-15
+      out:
+        - FY_Descript: Adjustments - Virements and shifts due to savings
+
+  - run: join
+    parameters:
+      source:
+        name: aene-2014-15
+        key:
+          - "VoteNo"
+          - "Department"
+          - "ProgNo"
+          - "Programme"
+          - "SprogNo"
+          - "Subprogramme"
+          - "FG1"
+          - "FG2"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "FY_Descript"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: aene-2014-15
+        key: null
+      fields:
+        "VoteNo": {}
+        "Department": {}
+        "ProgNo": {}
+        "Programme": {}
+        "SprogNo": {}
+        "Subprogramme": {}
+        "FG1": {}
+        "FG2" : {}
+        "Econ1": {}
+        "Econ2": {}
+        "Econ3": {}
+        "Econ4": {}
+        "Econ5": {}
+        "FinYear": {}
+        "FY_Descript": {}
+        "Budget Phase": {}
+        "Value":
+          aggregate: sum
+      full: true
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+
+  # Effectively floor as a poor man's round
+  - run: find_replace
+    parameters:
+      resources: aene-2014-15
+      fields:
+        - name: Value
+          patterns:
+            - find: (\d+)\.\d+
+              replace: \1
+
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
