@@ -65,7 +65,7 @@ ene-2015-16:
       - name: Budget Phase
         patterns:
         - find: "Actual"
-          replace: "Audit Outcome"
+          replace: "Audited Outcome"
       - name: Budget Phase
         patterns:
         - find: "Adjusted budget"
