@@ -68,9 +68,12 @@ def process_row(row, row_index,
         raise Exception("Invalid sphere parameter")
 
     department_name = row[dept_name_key]
-    auth_prog_name \
-        = programme_names[sphere][government_name][department_name].\
-        get(slugify(row[prog_name_key], to_lower=True), None)
+    try:
+        auth_prog_name \
+            = programme_names[sphere][government_name][department_name].\
+            get(slugify(row[prog_name_key], to_lower=True), None)
+    except KeyError:
+        auth_prog_name = None
     if auth_prog_name:
         row[prog_name_key] = auth_prog_name
     else:

@@ -168,9 +168,22 @@ expenditure-time-series:
         in:
           - FinYear: '2015'
 
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/nat-are-2014-15/final/data/are-2014-15.csv'
+        name: 'are-2014-15'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: are-2014-15
+        in:
+          - FinYear: '2014'
+
     - run: filter
       parameters:
         resources:
+          - are-2014-15
           - are-2015-16
           - are-2016-17
           - are-2017-18
@@ -180,6 +193,7 @@ expenditure-time-series:
     - run: concatenate
       parameters:
         sources:
+          - are-2014-15
           - are-2015-16
           - are-2016-17
           - are-2017-18

@@ -60,6 +60,10 @@ are-2014-15:
           replace: Total
         - find: ^(Final Appropriation)
           replace: Total
+      - name: SprogNo
+        patterns:
+        - find: (\d+)\.(\d+)
+          replace: \2
   - run: department_names
     parameters:
       sphere: national
