@@ -53,9 +53,23 @@ expenditure-time-series:
         resources: ene-2015-16
         in:
           - financial_year: '2015'
+
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-national-expenditure-south-africa-2014-15/final/data/ene-2014-15.csv'
+        name: 'ene-2014-15'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2014-15
+        in:
+          - finyear: '2014'
+
     - run: add_computed_field
       parameters:
         resources:
+          - ene-2014-15
           - ene-2015-16
           - ene-2016-17
           - ene-2017-18
@@ -114,17 +128,25 @@ expenditure-time-series:
       parameters:
         resources: aene-2015-16
         in:
-          - FinYear: '2015'
+          - finyear: '2015'
+
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/adjusted-estimates-of-national-expenditure-2014-15/final/data/aene-2014-15.csv'
+        name: 'aene-2014-15'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: aene-2014-15
+        in:
+          - finyear: '2014'
 
     - run: filter
       parameters:
         resources:
+          - aene-2014-15
           - aene-2015-16
-        out:
-          - Budget Phase: 'Voted (Main appropriation)'
-    - run: filter
-      parameters:
-        resources:
           - aene-2016-17
           - aene-2017-18
           - aene-2018-19
@@ -178,17 +200,25 @@ expenditure-time-series:
       parameters:
         resources: are-2014-15
         in:
-          - FinYear: '2014'
+          - finyear: '2014'
 
     - run: filter
       parameters:
         resources:
           - are-2014-15
+        out:
+          - budget_phase: 'Adjusted Appropriation'
+
+    - run: filter
+      parameters:
+        resources:
           - are-2015-16
           - are-2016-17
           - are-2017-18
         out:
           - Budget Phase: 'Adjusted Appropriation'
+
+
 
     - run: concatenate
       parameters:
@@ -197,10 +227,12 @@ expenditure-time-series:
           - are-2015-16
           - are-2016-17
           - are-2017-18
+          - ene-2014-15
           - ene-2015-16
           - ene-2016-17
           - ene-2017-18
           - ene-2018-19
+          - aene-2014-15
           - aene-2015-16
           - aene-2016-17
           - aene-2017-18
