@@ -257,6 +257,52 @@ expenditure-time-series:
           Value: ['value']
           Financial Year: ['finyear', 'FinYear', 'financial_year']
       cache: false
+
+
+  # Deduplicate
+  - run: join
+    parameters:
+      source:
+        name: expenditure-time-series
+        key:
+          - "Budget Phase"
+          - "Department"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "Programme Number"
+          - "Programme"
+          - "Subprogramme Number"
+          - "Subprogramme"
+          - "Vote Number"
+          - "Amount Kind"
+          - "Value"
+          - "Financial Year"
+        delete: yes
+      target:
+        name: expenditure-time-series
+        key: null
+      fields:
+        "Budget Phase": {}
+        "Department": {}
+        "Econ1": {}
+        "Econ2": {}
+        "Econ3": {}
+        "Econ4": {}
+        "Econ5": {}
+        "Programme Number": {}
+        "Programme": {}
+        "Subprogramme Number": {}
+        "Subprogramme": {}
+        "Vote Number": {}
+        "Amount Kind": {}
+        "Financial": {}
+        "Value":
+          aggregate: sum
+      full: true
+
     - run: dump_to_path
       parameters:
         out-path: './processed'
