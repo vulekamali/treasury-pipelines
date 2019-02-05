@@ -1,0 +1,170 @@
+ene-2015-16:
+  title: Estimates of National Expenditure
+  description: Main budget
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/late-2018-structure-shares/NAT+ENE+2015-16.xlsx"
+      name: 'ene-2015-16'
+      format: 'xlsx'
+    cache: true
+
+  - run: department_names
+    parameters:
+      sphere: national
+      financial_year: 2015-16
+      department_column: 'Department'
+
+  - run: filter
+    parameters:
+      resources: ene-2015-16
+      out:
+        - FY_Descript: Est. under/(over)
+  - run: filter
+    parameters:
+      resources: ene-2015-16
+      out:
+        - FY_Descript: Other adjustments
+  - run: filter
+    parameters:
+      resources: ene-2015-16
+      out:
+        - FY_Descript: Revised estimate
+  - run: filter
+    parameters:
+      resources: ene-2015-16
+      out:
+        - FY_Descript: Roll-overs
+  - run: filter
+    parameters:
+      resources: ene-2015-16
+      out:
+        - FY_Descript: "U&U"
+  - run: filter
+    parameters:
+      resources: ene-2015-16
+      out:
+        - FY_Descript: Virement
+
+  - run: add_computed_field
+    parameters:
+      resources: ene-2015-16
+      fields:
+      - operation: format
+        target: Budget Phase
+        with: '{FY_Descript}'
+
+  - run: find_replace
+    parameters:
+      resources: ene-2015-16
+      fields:
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: "Actual"
+          replace: "Audited Outcome"
+      - name: Budget Phase
+        patterns:
+        - find: "Adjusted budget"
+          replace: "Adjusted appropriation"
+      - name: Budget Phase
+        patterns:
+        - find: "Main budget"
+          replace: "Main appropriation"
+      - name: Budget Phase
+        patterns:
+        - find: "MTEF"
+          replace: "Medium Term Estimates"
+      - name: FG1
+        patterns:
+        - find: 0
+          replace: "0"
+      - name: FG2
+        patterns:
+        - find: 0
+          replace: "0"
+
+  - run: estimates_of_expenditure_tabled_year_phase
+    parameters:
+      financial_year: "2015"
+
+  - run: delete_fields
+    parameters:
+      resources: ene-2015-16
+      fields:
+      - Source
+      - BudYear
+      - Province
+      - ValueIndi
+      - Combo
+      - GFS1
+      - GFS2
+      - GFS3
+      - FY_Descript
+
+  # Deduplicate
+  - run: join
+    parameters:
+      source:
+        name: ene-2015-16
+        key:
+          - "VoteNo"
+          - "Department"
+          - "ProgNo"
+          - "Programme"
+          - "SprogNo"
+          - "Subprogramme"
+          - "FG1"
+          - "FG2"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: ene-2015-16
+        key: null
+      fields:
+        "VoteNo": {}
+        "Department": {}
+        "ProgNo": {}
+        "Programme": {}
+        "SprogNo": {}
+        "Subprogramme": {}
+        "FG1": {}
+        "FG2": {}
+        "Econ1": {}
+        "Econ2": {}
+        "Econ3": {}
+        "Econ4": {}
+        "Econ5": {}
+        "FinYear": {}
+        "Budget Phase": {}
+        "Value":
+          aggregate: sum
+      full: true
+
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+
+  # Effectively floor as a poor man's round
+  - run: find_replace
+    parameters:
+      resources: ene-2015-16
+      fields:
+        - name: Value
+          patterns:
+            - find: (\d+)\.\d+
+              replace: \1
+
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
