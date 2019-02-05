@@ -219,12 +219,12 @@ expenditure-time-series:
           - Budget Phase: 'Adjusted Appropriation'
 
 
-  - run: delete_fields
-    parameters:
-      resources: ene-2014-15
-      fields:
-      - FG1
-      - FG2
+    - run: delete_fields
+      parameters:
+        resources: ene-2014-15
+        fields:
+        - FG1
+        - FG2
 
 
     - run: concatenate
@@ -266,48 +266,48 @@ expenditure-time-series:
       cache: false
 
 
-  # Deduplicate
-  - run: join
-    parameters:
-      source:
-        name: expenditure-time-series
-        key:
-          - "Budget Phase"
-          - "Department"
-          - "Econ1"
-          - "Econ2"
-          - "Econ3"
-          - "Econ4"
-          - "Econ5"
-          - "Programme Number"
-          - "Programme"
-          - "Subprogramme Number"
-          - "Subprogramme"
-          - "Vote Number"
-          - "Amount Kind"
-          - "Financial Year"
-        delete: yes
-      target:
-        name: expenditure-time-series
-        key: null
-      fields:
-        "Budget Phase": {}
-        "Department": {}
-        "Econ1": {}
-        "Econ2": {}
-        "Econ3": {}
-        "Econ4": {}
-        "Econ5": {}
-        "Programme Number": {}
-        "Programme": {}
-        "Subprogramme Number": {}
-        "Subprogramme": {}
-        "Vote Number": {}
-        "Amount Kind": {}
-        "Financial Year": {}
-        "Value":
-          aggregate: sum
-      full: true
+    # Deduplicate
+    - run: join
+      parameters:
+        source:
+          name: expenditure-time-series
+          key:
+            - "Budget Phase"
+            - "Department"
+            - "Econ1"
+            - "Econ2"
+            - "Econ3"
+            - "Econ4"
+            - "Econ5"
+            - "Programme Number"
+            - "Programme"
+            - "Subprogramme Number"
+            - "Subprogramme"
+            - "Vote Number"
+            - "Amount Kind"
+            - "Financial Year"
+          delete: yes
+        target:
+          name: expenditure-time-series
+          key: null
+        fields:
+          "Budget Phase": {}
+          "Department": {}
+          "Econ1": {}
+          "Econ2": {}
+          "Econ3": {}
+          "Econ4": {}
+          "Econ5": {}
+          "Programme Number": {}
+          "Programme": {}
+          "Subprogramme Number": {}
+          "Subprogramme": {}
+          "Vote Number": {}
+          "Amount Kind": {}
+          "Financial Year": {}
+          "Value":
+            aggregate: sum
+        full: true
 
     - run: dump_to_path
       parameters:
