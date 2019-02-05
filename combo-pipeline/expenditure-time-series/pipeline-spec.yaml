@@ -219,6 +219,13 @@ expenditure-time-series:
           - Budget Phase: 'Adjusted Appropriation'
 
 
+  - run: delete_fields
+    parameters:
+      resources: ene-2014-15
+      fields:
+      - FG1
+      - FG2
+
 
     - run: concatenate
       parameters:
@@ -278,7 +285,6 @@ expenditure-time-series:
           - "Subprogramme"
           - "Vote Number"
           - "Amount Kind"
-          - "Value"
           - "Financial Year"
         delete: yes
       target:
@@ -298,7 +304,7 @@ expenditure-time-series:
         "Subprogramme": {}
         "Vote Number": {}
         "Amount Kind": {}
-        "Financial": {}
+        "Financial Year": {}
         "Value":
           aggregate: sum
       full: true
