@@ -44,7 +44,7 @@ expenditure-time-series:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/ce3e6738-a5eb-422d-85ef-346bb6b09fc5/resource/f956616e-f773-4ba7-984a-56595c732bc9/download/estimates-of-national-expenditure-south-africa-2015-16.csv'
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-national-expenditure-2015-16-uploaded-2019-01-25t0215/final/data/ene-2015-16.csv'
         name: 'ene-2015-16'
         format: 'csv'
       cache: true
@@ -52,7 +52,7 @@ expenditure-time-series:
       parameters:
         resources: ene-2015-16
         in:
-          - financial_year: '2015'
+          - finyear: '2015'
 
     - run: load
       parameters:
@@ -253,7 +253,7 @@ expenditure-time-series:
           Subprogramme Number: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number']
           Subprogramme: ['subprogramme']
           Vote Number: ['voteno', 'Voteno', 'VoteNo', 'vote_number']
-          Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
+          Amount Kind: ['amount kind', 'amount_kind', 'fy_descript', 'FY_Descript']
           Value: ['value']
           Financial Year: ['finyear', 'FinYear', 'financial_year']
       cache: false
