@@ -1,0 +1,105 @@
+infra-projects-2019-20:
+  title: Infrastructure Projects 2019-20
+  description: Infrastructure Projects in South Africa
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/infra-projects/Infra+Projects+BR2019.csv"
+      name: 'infra-2019-20'
+      format: 'csv'
+    cache: true
+
+#  - run: department_names
+#    parameters:
+#      sphere: national
+#      financial_year: 2018-19
+#      department_column: 'Department'
+
+  - run: unpivot
+    parameters:
+      resources: infra-2019-20
+      extraKeyFields:
+        - name: Financial Year
+          type: integer
+        - name: Budget Phase
+          type: string
+      extraValueField:
+        name: Amount
+        type: number
+      unpivot:
+        - name: 2015/16
+          keys:
+            Financial Year: 2015
+            Budget Phase: Audited Outcome
+        - name: 2016/17
+          keys:
+            Financial Year: 2016
+            Budget Phase: Audited Outcome
+        - name: 2017/18
+          keys:
+            Financial Year: 2017
+            Budget Phase: Audited Outcome
+        - name: 2018/19
+          keys:
+            Financial Year: 2018
+            Budget Phase: Adjusted Appropriation
+        - name: 2019/20
+          keys:
+            Financial Year: 2019
+            Budget Phase: MTEF
+        - name: 2020/21
+          keys:
+            Financial Year: 2020
+            Budget Phase: MTEF
+        - name: 2021/22
+          keys:
+            Financial Year: 2021
+            Budget Phase: MTEF
+
+  # Deduplicate
+  - run: join
+    parameters:
+      source:
+        name: infra-projects-2019-20
+        key:
+          - "Department"
+          - "Sector"
+          - "Project name"
+          - "Project description"
+          - "GPS code"
+          - "Nature of investment"
+          - "Infrastructure type"
+          - "Current project stage"
+          - "SIP category"
+          - "Total project cost"
+          - "Financial Year"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: infra-projects-2019-20
+        key: null
+      fields:
+        "Department": {}
+        "Sector": {}
+        "Project name": {}
+        "Project description": {}
+        "GPS code": {}
+        "Nature of investment": {}
+        "Infrastructure type": {}
+        "Current project stage": {}
+        "SIP category": {}
+        "Total project cost": {}
+        "Financial Year": {}
+        "Budget Phase": {}
+        "Value":
+          aggregate: sum
+      full: true
+
+#  - run: multiply
+#    parameters:
+#      value_field: 'Value'
+
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
