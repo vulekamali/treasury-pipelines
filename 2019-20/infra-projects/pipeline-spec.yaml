@@ -9,12 +9,6 @@ infra-projects-2019-20:
       format: 'csv'
     cache: true
 
-#  - run: department_names
-#    parameters:
-#      sphere: national
-#      financial_year: 2018-19
-#      department_column: 'Department'
-
   - run: unpivot
     parameters:
       resources: infra-2019-20
@@ -94,10 +88,6 @@ infra-projects-2019-20:
         "Value":
           aggregate: sum
       full: true
-
-#  - run: multiply
-#    parameters:
-#      value_field: 'Value'
 
   - run: dump_to_path
     parameters:
