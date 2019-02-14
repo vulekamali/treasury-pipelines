@@ -4,10 +4,10 @@ infra-projects-2019-20:
   pipeline:
   - run: load
     parameters:
-      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/infra-projects/Infra+Projects+BR2019.csv"
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/infra-projects/Final+Vulekamali+Featured+39+-+MODIFIED.csv"
       name: 'infra-2019-20'
       format: 'csv'
-    cache: true
+    cache: false
 
   - run: unpivot
     parameters:
