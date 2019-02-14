@@ -92,7 +92,16 @@ infra-projects-2019-20:
   - run: add_slug
     parameters:
       new-column-name: "Project slug"
-      slug-from: "Project name"
+      slug-from-1: "Department"
+      slug-from-2: "Project name"
+
+  - run: find_replace
+    parameters:
+      fields:
+        - name: Featured
+          patterns:
+            - find: true|True
+              replace: 'TRUE'
 
   - run: dump_to_path
     parameters:

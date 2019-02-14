@@ -9,7 +9,8 @@ def modify_datapackage(datapackage, parameters, stats):
     return datapackage
 
 def process_row(row, row_index, resource_descriptor, resource_index, parameters, stats):
-    slug = slugify(row[parameters['slug-from']], lowercase=True)
+    slug_string = row[parameters['slug-from-1']] + '-' + row[parameters['slug-from-2']]
+    slug = slugify(slug_string, to_lower=True)
     print(slug)
     row[parameters['new-column-name']] = slug
     return row
