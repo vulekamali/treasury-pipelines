@@ -89,6 +89,11 @@ infra-projects-2019-20:
           aggregate: sum
       full: true
 
+  - run: add_slug
+    parameters:
+      new-column-name: "Project slug"
+      slug-from: "Project name"
+
   - run: dump_to_path
     parameters:
       out-path: './processed'
