@@ -50,45 +50,6 @@ infra-projects-2019-20:
             Financial Year: 2021
             Budget Phase: MTEF
 
-  # Deduplicate
-  - run: join
-    parameters:
-      source:
-        name: infra-projects-2019-20
-        key:
-          - "Department"
-          - "Sector"
-          - "Project name"
-          - "Project description"
-          - "GPS code"
-          - "Nature of investment"
-          - "Infrastructure type"
-          - "Current project stage"
-          - "SIP category"
-          - "Total project cost"
-          - "Financial Year"
-          - "Budget Phase"
-        delete: yes
-      target:
-        name: infra-projects-2019-20
-        key: null
-      fields:
-        "Department": {}
-        "Sector": {}
-        "Project name": {}
-        "Project description": {}
-        "GPS code": {}
-        "Nature of investment": {}
-        "Infrastructure type": {}
-        "Current project stage": {}
-        "SIP category": {}
-        "Total project cost": {}
-        "Financial Year": {}
-        "Budget Phase": {}
-        "Value":
-          aggregate: sum
-      full: true
-
   - run: add_slug
     parameters:
       new-column-name: "Project slug"
