@@ -4,7 +4,7 @@ infra-projects-2019-20:
   pipeline:
   - run: load
     parameters:
-      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/infra-projects/Final+Vulekamali+Featured+39+-+MODIFIED.csv"
+      from: "../../final.csv"
       name: 'infra-2019-20'
       format: 'csv'
     cache: false
@@ -63,6 +63,14 @@ infra-projects-2019-20:
           patterns:
             - find: true|True
               replace: 'TRUE'
+
+  - run: multiply
+    parameters:
+      value_field: 'Amount'
+
+  - run: multiply
+    parameters:
+      value_field: 'Total project cost'
 
   - run: dump_to_path
     parameters:
