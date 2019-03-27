@@ -1,0 +1,104 @@
+provincial-time-series:
+  title: Provincial Time Series
+  description: Combined dataset which consists of EPRE of all financial years.
+  pipeline:
+
+    #### EPRE
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/12e1481d-2173-44f2-a468-b4bd022a84d5/resource/dde660d3-6267-4b5c-b562-97ced746bec8/download/estimates-of-provincial-expenditure-south-africa-2018-19.csv'
+        name: 'epre-2018-19'
+        format: 'csv'
+      cache: true
+
+    - run: filter
+      parameters:
+        resources: epre-2018-19
+        in:
+          - financial_year: '2018'
+          - budget_phase: 'Main appropriation'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/9ac6e267-77e3-44a4-bd99-9a31a7112875/resource/4d5579ca-de40-4c2f-8d5b-55e4432da78a/download/estimates-of-provincial-expenditure-south-africa-2017-18.csv'
+        name: 'epre-2017-18'
+        format: 'csv'
+      cache: true
+
+    - run: filter
+      parameters:
+        resources: epre-2017-18
+        in:
+          - financial_year: '2017'
+          - budget_phase: 'Main appropriation'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/918a7ab3-717c-48a4-a665-bc8f88cd92d8/resource/eb07976c-5f3b-48be-84f1-3589f83da123/download/estimates-of-provincial-expenditure-south-africa-2016-17.csv'
+        name: 'epre-2016-17'
+        format: 'csv'
+      cache: true
+
+    - run: filter
+      parameters:
+        resources: epre-2016-17
+        in:
+          - financial_year: '2016'
+          - budget_phase: 'Main appropriation'
+
+    - run: load
+      parameters:
+        from: 'https://data.vulekamali.gov.za/dataset/5c619f67-c06b-489e-b8ef-7d8842975f8f/resource/b65549ba-927f-44a5-a780-ccfd8bb8ecf8/download/estimates-of-provincial-expenditure-south-africa-2015-16.csv'
+        name: 'epre-2015-16'
+        format: 'csv'
+      cache: true
+
+    - run: filter
+      parameters:
+        resources: epre-2015-16
+        in:
+          - financial_year: '2015'
+          - budget_phase: 'Main appropriation'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2018-19
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+          -
+            operation: format
+            target: Amount Kind
+            with: 'Total'
+
+
+    - run: concatenate
+      parameters:
+        sources:
+          - epre-2018-19
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        target:
+          name: provincial-time-series
+          path: data/provincial-time-series.csv
+        fields:
+          Budget Phase: ['budget phase', 'budget_phase']
+          Department: ['department']
+          Government: ['government']
+          Econ1: ['econ1', 'economic_classification_1']
+          Econ2: ['econ2', 'economic_classification_2']
+          Econ3: ['econ3', 'economic_classification_3']
+          Econ4: ['econ4', 'economic_classification_4']
+          Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
+          Programme: ['programme']
+          Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
+          Value: ['value']
+          Financial Year: ['finyear', 'FinYear', 'financial_year']
+      cache: false
+    - run: dump_to_path
+      parameters:
+        out-path: './processed'
+        format: 'csv'
