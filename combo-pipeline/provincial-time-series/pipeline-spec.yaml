@@ -3,7 +3,7 @@ provincial-time-series:
   description: Combined dataset which consists of EPRE of all financial years.
   pipeline:
 
-    #### EPRE
+    ### EPRE
     - run: load
       parameters:
         from: 'https://data.vulekamali.gov.za/dataset/12e1481d-2173-44f2-a468-b4bd022a84d5/resource/dde660d3-6267-4b5c-b562-97ced746bec8/download/estimates-of-provincial-expenditure-south-africa-2018-19.csv'
@@ -16,7 +16,6 @@ provincial-time-series:
         resources: epre-2018-19
         in:
           - financial_year: '2018'
-          - budget_phase: 'Main appropriation'
 
     - run: load
       parameters:
@@ -30,7 +29,6 @@ provincial-time-series:
         resources: epre-2017-18
         in:
           - financial_year: '2017'
-          - budget_phase: 'Main appropriation'
 
     - run: load
       parameters:
@@ -44,7 +42,6 @@ provincial-time-series:
         resources: epre-2016-17
         in:
           - financial_year: '2016'
-          - budget_phase: 'Main appropriation'
 
     - run: load
       parameters:
@@ -58,7 +55,6 @@ provincial-time-series:
         resources: epre-2015-16
         in:
           - financial_year: '2015'
-          - budget_phase: 'Main appropriation'
 
     - run: add_computed_field
       parameters:
