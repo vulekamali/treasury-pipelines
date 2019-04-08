@@ -226,6 +226,16 @@ expenditure-time-series:
           Value: ['value']
           Financial Year: ['finyear', 'FinYear', 'financial_year']
       cache: false
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - expenditure-time-series
+        fields:
+          - operation: format
+            target: Government
+            with: 'South Africa'
+
     - run: dump_to_path
       parameters:
         out-path: './processed'
