@@ -32,15 +32,15 @@ expenditure-time-series:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/3895fbe6-4f1d-4ec3-a00c-b480db002d26/resource/f04d6407-7e58-47d6-8b20-ccfe8b744cc5/download/estimates-of-national-expenditure-south-africa-2016-17.csv'
+        from: 'https://data.vulekamali.gov.za/dataset/3895fbe6-4f1d-4ec3-a00c-b480db002d26/resource/f04d6407-7e58-47d6-8b20-ccfe8b744cc5/download/ene-2016-17.csv'
         name: 'ene-2016-17'
         format: 'csv'
-      cache: true
+      cache: false
     - run: filter
       parameters:
         resources: ene-2016-17
         in:
-          - financial_year: '2016'
+          - FinYear: '2016'
 
     - run: load
       parameters:
@@ -217,6 +217,8 @@ expenditure-time-series:
           Econ3: ['econ3', 'economic_classification_3']
           Econ4: ['econ4', 'economic_classification_4']
           Econ5: ['econ5', 'economic_classification_5']
+          Function Group 1: ['fg1', 'government_function', 'FG1']
+          Function Group 2: ['fg2', 'FG2']
           Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
           Subprogramme Number: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number']
