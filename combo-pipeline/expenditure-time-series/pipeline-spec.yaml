@@ -53,6 +53,19 @@ expenditure-time-series:
         resources: ene-2015-16
         in:
           - finyear: '2015'
+
+    - run: load
+      parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-national-expenditure-2019-20-uploaded-2019-02-20t1910/final/data/ene-2019-20.csv'
+        name: 'ene-2019-20'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2019-20
+        in:
+          - finyear: '2019'
+
     - run: add_computed_field
       parameters:
         resources:
@@ -60,6 +73,7 @@ expenditure-time-series:
           - ene-2016-17
           - ene-2017-18
           - ene-2018-19
+          - ene-2019-20
         fields:
           -
             operation: format
@@ -187,6 +201,7 @@ expenditure-time-series:
           - ene-2016-17
           - ene-2017-18
           - ene-2018-19
+          - ene-2019-20
           - aene-2015-16
           - aene-2016-17
           - aene-2017-18
@@ -211,6 +226,16 @@ expenditure-time-series:
           Value: ['value']
           Financial Year: ['finyear', 'FinYear', 'financial_year']
       cache: false
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - expenditure-time-series
+        fields:
+          - operation: format
+            target: Government
+            with: 'South Africa'
+
     - run: dump_to_path
       parameters:
         out-path: './processed'
