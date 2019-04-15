@@ -1,4 +1,4 @@
-:
+budget-vs-actual-provincial:
   title: Provincial budgeted and actual expenditure
   description: Combined dataset which consists of EPRE of all financial years.
   pipeline:
@@ -78,7 +78,7 @@
           - epre-2016-17
           - epre-2015-16
         target:
-          name:
+          name: budget-vs-actual-provincial
           path: data/.csv
         fields:
           Budget Phase: ['budget phase', 'budget_phase']
