@@ -1,5 +1,5 @@
-expenditure-time-series:
-  title: Expenditure Time Series
+budget-vs-actual-national:
+  title: National budgeted and actual expenditure
   description: Combined dataset which consists of ENE, AENE and ARE datasets of all financial years.
   pipeline:
     # ENE must be loaded prior to loading AR(E) otherwise it results in a ValidationError
@@ -207,8 +207,8 @@ expenditure-time-series:
           - aene-2017-18
           - aene-2018-19
         target:
-          name: expenditure-time-series
-          path: data/expenditure-time-series.csv
+          name: budget-vs-actual-national
+          path: data/budget-vs-actual-national.csv
         fields:
           Budget Phase: ['budget phase', 'budget_phase']
           Department: ['department']
@@ -232,7 +232,7 @@ expenditure-time-series:
     - run: add_computed_field
       parameters:
         resources:
-          - expenditure-time-series
+          - budget-vs-actual-national
         fields:
           - operation: format
             target: Government
