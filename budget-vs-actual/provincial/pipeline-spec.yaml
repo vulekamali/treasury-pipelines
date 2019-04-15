@@ -79,7 +79,7 @@ budget-vs-actual-provincial:
           - epre-2015-16
         target:
           name: budget-vs-actual-provincial
-          path: data/.csv
+          path: data/budget-vs-actual-provincial.csv
         fields:
           Budget Phase: ['budget phase', 'budget_phase']
           Department: ['department']
