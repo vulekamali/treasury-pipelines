@@ -38,12 +38,17 @@ def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
     column_key = parameters.get('department_column', 'department')
+    government_key = parameters.get('government_column', 'government')
     department_slug = slugify(row[column_key], to_lower=True)
     sphere = parameters['sphere']
     if sphere == 'national':
         government_name = 'South Africa'
     elif sphere == 'provincial':
-        government_name = row['government']
+        government_name = row[government_key]
+        government_name_slug = slugify(government_name, to_lower=True)
+        for gov in department_names[sphere].keys():
+            if slugify(gov, to_lower=True) == government_name_slug:
+                government_name = gov
     else:
         raise Exception("Unknown sphere: %r" % sphere)
     authoritative_department_name \
