@@ -13,6 +13,17 @@ department_names = {
     'provincial': {},
 }
 warned = {}
+PROVINCE_KEY_MAPPING = {
+    'NORTH WEST': 'North West',
+    'GAUTENG': 'Gauteng',
+    'EASTERN CAPE': 'Eastern Cape',
+    'WESTERN CAPE': 'Western Cape',
+    'NORTHERN CAPE': 'Northern Cape',
+    'LIMPOPO': 'Limpopo',
+    'KWAZULU-NATAL': 'KwaZulu-Natal',
+    'FREE STATE': 'Free State',
+    'MPUMALANGA': 'Mpumalanga'
+}
 
 
 def modify_datapackage(datapackage, parameters, stats):
@@ -45,10 +56,7 @@ def process_row(row, row_index,
         government_name = 'South Africa'
     elif sphere == 'provincial':
         government_name = row[government_key]
-        government_name_slug = slugify(government_name, to_lower=True)
-        for gov in department_names[sphere].keys():
-            if slugify(gov, to_lower=True) == government_name_slug:
-                government_name = gov
+        government_name = PROVINCE_KEY_MAPPING[government_name]
     else:
         raise Exception("Unknown sphere: %r" % sphere)
     authoritative_department_name \

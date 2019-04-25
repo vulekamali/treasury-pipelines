@@ -13,7 +13,7 @@ def process_row(row, row_index,
     try:
         if row[value_field] == '':
             row[value_field] = '0'
-        row[value_field] = float(row[value_field]) * 1000
+        row[value_field] = float(row[value_field].replace(',', '')) * 1000
         return row
     except:
         logging.exception("Error with row %r", row)

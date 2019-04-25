@@ -32,7 +32,7 @@ provincial-time-series:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/918a7ab3-717c-48a4-a665-bc8f88cd92d8/resource/eb07976c-5f3b-48be-84f1-3589f83da123/download/estimates-of-provincial-expenditure-south-africa-2016-17.csv'
+        from: ''
         name: 'epre-2016-17'
         format: 'csv'
       cache: true
@@ -41,11 +41,11 @@ provincial-time-series:
       parameters:
         resources: epre-2016-17
         in:
-          - financial_year: '2016'
+          - FinYear: '2016'
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/5c619f67-c06b-489e-b8ef-7d8842975f8f/resource/b65549ba-927f-44a5-a780-ccfd8bb8ecf8/download/estimates-of-provincial-expenditure-south-africa-2015-16.csv'
+        from: ''
         name: 'epre-2015-16'
         format: 'csv'
       cache: true
@@ -54,7 +54,7 @@ provincial-time-series:
       parameters:
         resources: epre-2015-16
         in:
-          - financial_year: '2015'
+          - FinYear: '2015'
 
     - run: add_computed_field
       parameters:
@@ -88,6 +88,8 @@ provincial-time-series:
           Econ2: ['econ2', 'economic_classification_2']
           Econ3: ['econ3', 'economic_classification_3']
           Econ4: ['econ4', 'economic_classification_4']
+          Function Group 1: ['fg1', 'government_function', 'FG1']
+          Function Group 2: ['fg2', 'FG2']
           Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
           Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']

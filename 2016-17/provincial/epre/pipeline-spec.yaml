@@ -1,56 +1,56 @@
-epre-2015-16:
+epre-2016-17:
   title: Estimates of Provincial Expenditure
   description: Main budget
   pipeline:
   - run: load
     parameters:
       from: "https://github.com/vulekamali/budget-spending-data/raw/master/PRV%20EPRE%202015-16.csv"
-      name: 'epre-2015-16'
+      name: 'epre-2016-17'
       format: 'csv'
     cache: false
 
   - run: department_names
     parameters:
       sphere: provincial
-      financial_year: 2015-16
+      financial_year: 2016-17
       department_column: 'Department'
       government_column: 'Province'
     cache: false
 
   - run: filter
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       out:
         - FY_Descript: Est. under/(over)
   - run: filter
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       out:
         - FY_Descript: Other adjustments
   - run: filter
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       out:
         - FY_Descript: Revised estimate
   - run: filter
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       out:
         - FY_Descript: Roll-overs
   - run: filter
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       out:
         - FY_Descript: "U&U"
   - run: filter
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       out:
         - FY_Descript: Virement
 
   - run: add_computed_field
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       fields:
       - operation: format
         target: Budget Phase
@@ -58,7 +58,7 @@ epre-2015-16:
 
   - run: find_replace
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       fields:
       - name: FinYear
         patterns:
@@ -91,11 +91,11 @@ epre-2015-16:
 
   - run: estimates_of_expenditure_tabled_year_phase
     parameters:
-      financial_year: "2015"
+      financial_year: "2016"
 
   - run: delete_fields
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       fields:
       - Source
       - BudYear
@@ -110,7 +110,7 @@ epre-2015-16:
   - run: join
     parameters:
       source:
-        name: epre-2015-16
+        name: epre-2016-17
         key:
           - "VoteNo"
           - "Department"
@@ -130,7 +130,7 @@ epre-2015-16:
           - "Budget Phase"
         delete: yes
       target:
-        name: epre-2015-16
+        name: epre-2016-17
         key: null
       fields:
         "VoteNo": {}
@@ -160,7 +160,7 @@ epre-2015-16:
   # Effectively floor as a poor man's round
   - run: find_replace
     parameters:
-      resources: epre-2015-16
+      resources: epre-2016-17
       fields:
         - name: Value
           patterns:
