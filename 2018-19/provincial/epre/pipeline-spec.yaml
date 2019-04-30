@@ -4,8 +4,7 @@ epre-2018-19:
   pipeline:
   - run: load
     parameters:
-      from: "PRV EPRE 2018-19.xlsx"
-      # from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/PRV+EPRE+2018-19.xlsx"
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/PRV+EPRE+2018-19.xlsx"
       name: 'epre-2018-19'
       format: 'xlsx'
     cache: true
