@@ -112,7 +112,6 @@ epre-2018-19:
       fields:
       - Source
       - BudYear
-      - Province
       - ValueIndi
       - Combo
       - GFS1
