@@ -104,7 +104,7 @@ epre-2018-19:
 
   - run: estimates_of_expenditure_tabled_year_phase
     parameters:
-      financial_year: "2019"
+      financial_year: "2018"
 
   - run: delete_fields
     parameters:
