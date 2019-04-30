@@ -4,16 +4,39 @@ epre-2018-19:
   pipeline:
   - run: load
     parameters:
-      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/PRV+EPRE+2018-19.xlsx"
+      from: "PRV EPRE 2018-19.xlsx"
+      # from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/PRV+EPRE+2018-19.xlsx"
       name: 'epre-2018-19'
       format: 'xlsx'
     cache: true
+    validate: true
+
+    # 0 in excel is int
+  - run: int_to_string
+    parameters:
+      column_name: 'FG1'
+
+    # 0 in excel is int
+  - run: int_to_string
+    parameters:
+      column_name: 'FG2'
+
+    # 0 in excel is int
+  - run: int_to_string
+    parameters:
+      column_name: 'Econ1'
+
+    # 0 in excel is int
+  - run: fix_provinces
+    parameters:
+      government_column: 'Province'
 
   - run: department_names
     parameters:
       sphere: provincial
       financial_year: 2018-19
       department_column: 'Department'
+      government_column: 'Province'
 
   - run: filter
     parameters:

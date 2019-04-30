@@ -37,24 +37,25 @@ def modify_datapackage(datapackage, parameters, stats):
 def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
-    column_key = parameters.get('department_column', 'department')
-    department_slug = slugify(row[column_key], to_lower=True)
+    department_column = parameters.get('department_column', 'department')
+    government_column = parameters.get('government_column', 'government')
+    department_slug = slugify(row[department_column], to_lower=True)
     sphere = parameters['sphere']
     if sphere == 'national':
         government_name = 'South Africa'
     elif sphere == 'provincial':
-        government_name = row['government']
+        government_name = row[government_column]
     else:
         raise Exception("Unknown sphere: %r" % sphere)
     authoritative_department_name \
         = department_names[sphere][government_name].get(department_slug, None)
     if authoritative_department_name:
-        row[column_key] = authoritative_department_name
+        row[department_column] = authoritative_department_name
     else:
-        warning_key = (government_name, row[column_key])
+        warning_key = (government_name, row[department_column])
         if warning_key not in warned:
             logging.warn("No authoritative department name found for %s - %s (%s)",
-                         government_name, row[column_key], department_slug)
+                         government_name, row[department_column], department_slug)
             warned[warning_key] = True
     return row
 
