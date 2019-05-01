@@ -9,6 +9,12 @@ budget-vs-actual-provincial:
         from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
       cache: true
 
+      # because otherwise string "addition" happens which looks like
+      # '7871520' + '9700802' + '-152' + '100000' = '100000-15297008027871520'
+    - run: string_to_int
+      parameters:
+        column_name: 'value'
+
     - run: filter
       parameters:
         resources: epre-2018-19
@@ -20,7 +26,6 @@ budget-vs-actual-provincial:
         resources: epre-2018-19
         fields:
           - voteno
-          - econ5
           - sprogno
           - subprogramme
 
@@ -29,36 +34,38 @@ budget-vs-actual-provincial:
         source:
           name: epre-2018-19
           key:
-            - "Province"
-            - "Department"
-            - "ProgNo"
-            - "Programme"
-            - "FG1"
-            - "FG2"
-            - "Econ1"
-            - "Econ2"
-            - "Econ3"
-            - "Econ4"
-            - "FinYear"
-            - "Budget Phase"
+            - "province"
+            - "department"
+            - "progno"
+            - "programme"
+            - "fg1"
+            - "fg2"
+            - "econ1"
+            - "econ2"
+            - "econ3"
+            - "econ4"
+            - "econ5"
+            - "finyear"
+            - "budget_phase"
           delete: yes
         target:
           name: epre-2018-19
           key: null
         fields:
-          "Province": {}
-          "Department": {}
-          "ProgNo": {}
-          "Programme": {}
-          "FG1": {}
-          "FG2": {}
-          "Econ1": {}
-          "Econ2": {}
-          "Econ3": {}
-          "Econ4": {}
-          "FinYear": {}
-          "Budget Phase": {}
-          "Value":
+          "province": {}
+          "department": {}
+          "progno": {}
+          "programme": {}
+          "fg1": {}
+          "fg2": {}
+          "econ1": {}
+          "econ2": {}
+          "econ3": {}
+          "econ4": {}
+          "econ5": {}
+          "finyear": {}
+          "budget_phase": {}
+          "value":
             aggregate: sum
         full: true
 
@@ -114,6 +121,50 @@ budget-vs-actual-provincial:
             target: Amount Kind
             with: 'Total'
 
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ1
+          with: 'economic_classification_2'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ2
+          with: 'economic_classification_3'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ3
+          with: 'economic_classification_4'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ4
+          with: 'economic_classification_5'
+
     - run: concatenate
       parameters:
         sources:
@@ -125,13 +176,14 @@ budget-vs-actual-provincial:
           name: budget-vs-actual-provincial
           path: data/budget-vs-actual-provincial.csv
         fields:
-          Budget Phase: ['budget phase', 'budget_phase']
+          Budget Phase: ['budget_phase']
           Department: ['department']
-          Government: ['government']
-          Econ1: ['econ1', 'economic_classification_1']
-          Econ2: ['econ2', 'economic_classification_2']
-          Econ3: ['econ3', 'economic_classification_3']
-          Econ4: ['econ4', 'economic_classification_4']
+          Government: ['government', 'province']
+          Econ1: ['econ1']
+          Econ2: ['econ2', 'corrected_econ2']
+          Econ3: ['econ3', 'corrected_econ3']
+          Econ4: ['econ4', 'corrected_econ4']
+          Econ4: ['econ5', 'corrected_econ5']
           FunctionGroup1: ['fg1']
           FunctionGroup2: ['fg2']
           Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
