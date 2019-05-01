@@ -6,6 +6,7 @@ budget-vs-actual-provincial:
     ### EPRE
     - run: load
       parameters:
+        name: epre-2018-19
         from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
       cache: true
 
@@ -28,7 +29,6 @@ budget-vs-actual-provincial:
           - voteno
           - sprogno
           - subprogramme
-          - econ5
 
     - run: join
       parameters:
@@ -45,6 +45,7 @@ budget-vs-actual-provincial:
             - "econ2"
             - "econ3"
             - "econ4"
+            - "econ5"
             - "finyear"
             - "budget_phase"
           delete: yes
@@ -62,6 +63,7 @@ budget-vs-actual-provincial:
           "econ2": {}
           "econ3": {}
           "econ4": {}
+          "econ5": {}
           "finyear": {}
           "budget_phase": {}
           "value":
@@ -142,6 +144,28 @@ budget-vs-actual-provincial:
           target: corrected_econ3
           with: '{economic_classification_2}'
 
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ4
+          with: '{economic_classification_3}'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ5
+          with: '{economic_classification_4}'
+
     - run: concatenate
       parameters:
         sources:
@@ -153,20 +177,21 @@ budget-vs-actual-provincial:
           name: budget-vs-actual-provincial
           path: data/budget-vs-actual-provincial.csv
         fields:
-          Budget Phase: ['budget_phase']
+          BudgetPhase: ['budget_phase']
           Department: ['department']
           Government: ['government', 'province']
-          Econ1: ['econ1']
-          Econ2: ['econ2', 'corrected_econ2']
-          Econ3: ['econ3', 'corrected_econ3']
-          Econ4: ['econ4']
+          EconomicClassification1: ['econ1']
+          EconomicClassification2: ['econ2', 'corrected_econ2']
+          EconomicClassification3: ['econ3', 'corrected_econ3']
+          EconomicClassification4: ['econ4', 'corrected_econ4']
+          EconomicClassification5: ['econ5', 'corrected_econ5']
           FunctionGroup1: ['fg1']
           FunctionGroup2: ['fg2']
-          Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
+          ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
-          Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
+          AmountKind: ['amount kind', 'fy_descript', 'FY_Descript']
           Value: ['value']
-          Financial Year: ['finyear', 'FinYear', 'financial_year']
+          FinancialYear: ['finyear', 'FinYear', 'financial_year']
       cache: false
     - run: dump_to_path
       parameters:
