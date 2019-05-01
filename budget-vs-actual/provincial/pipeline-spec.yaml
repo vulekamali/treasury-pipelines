@@ -28,6 +28,7 @@ budget-vs-actual-provincial:
           - voteno
           - sprogno
           - subprogramme
+          - econ5
 
     - run: join
       parameters:
@@ -44,7 +45,6 @@ budget-vs-actual-provincial:
             - "econ2"
             - "econ3"
             - "econ4"
-            - "econ5"
             - "finyear"
             - "budget_phase"
           delete: yes
@@ -62,7 +62,6 @@ budget-vs-actual-provincial:
           "econ2": {}
           "econ3": {}
           "econ4": {}
-          "econ5": {}
           "finyear": {}
           "budget_phase": {}
           "value":
@@ -129,19 +128,8 @@ budget-vs-actual-provincial:
           - epre-2015-16
         fields:
         - operation: format
-          target: corrected_econ1
-          with: 'economic_classification_2'
-
-    - run: add_computed_field
-      parameters:
-        resources:
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
-        fields:
-        - operation: format
           target: corrected_econ2
-          with: 'economic_classification_3'
+          with: '{economic_classification_1}'
 
     - run: add_computed_field
       parameters:
@@ -152,18 +140,7 @@ budget-vs-actual-provincial:
         fields:
         - operation: format
           target: corrected_econ3
-          with: 'economic_classification_4'
-
-    - run: add_computed_field
-      parameters:
-        resources:
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
-        fields:
-        - operation: format
-          target: corrected_econ4
-          with: 'economic_classification_5'
+          with: '{economic_classification_2}'
 
     - run: concatenate
       parameters:
@@ -182,8 +159,7 @@ budget-vs-actual-provincial:
           Econ1: ['econ1']
           Econ2: ['econ2', 'corrected_econ2']
           Econ3: ['econ3', 'corrected_econ3']
-          Econ4: ['econ4', 'corrected_econ4']
-          Econ4: ['econ5', 'corrected_econ5']
+          Econ4: ['econ4']
           FunctionGroup1: ['fg1']
           FunctionGroup2: ['fg2']
           Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
