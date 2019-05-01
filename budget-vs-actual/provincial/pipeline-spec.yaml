@@ -6,16 +6,61 @@ budget-vs-actual-provincial:
     ### EPRE
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/12e1481d-2173-44f2-a468-b4bd022a84d5/resource/dde660d3-6267-4b5c-b562-97ced746bec8/download/estimates-of-provincial-expenditure-south-africa-2018-19.csv'
-        name: 'epre-2018-19'
-        format: 'csv'
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
       cache: true
 
     - run: filter
       parameters:
         resources: epre-2018-19
         in:
-          - financial_year: '2018'
+          - finyear: '2018'
+
+    - run: delete_fields
+      parameters:
+        resources: epre-2018-19
+        fields:
+          - voteno
+          - econ5
+          - sprogno
+          - subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: epre-2018-19
+          key:
+            - "Province"
+            - "Department"
+            - "ProgNo"
+            - "Programme"
+            - "FG1"
+            - "FG2"
+            - "Econ1"
+            - "Econ2"
+            - "Econ3"
+            - "Econ4"
+            - "FinYear"
+            - "Budget Phase"
+          delete: yes
+        target:
+          name: epre-2018-19
+          key: null
+        fields:
+          "Province": {}
+          "Department": {}
+          "ProgNo": {}
+          "Programme": {}
+          "FG1": {}
+          "FG2": {}
+          "Econ1": {}
+          "Econ2": {}
+          "Econ3": {}
+          "Econ4": {}
+          "FinYear": {}
+          "Budget Phase": {}
+          "Value":
+            aggregate: sum
+        full: true
 
     - run: load
       parameters:
@@ -69,7 +114,6 @@ budget-vs-actual-provincial:
             target: Amount Kind
             with: 'Total'
 
-
     - run: concatenate
       parameters:
         sources:
@@ -88,6 +132,8 @@ budget-vs-actual-provincial:
           Econ2: ['econ2', 'economic_classification_2']
           Econ3: ['econ3', 'economic_classification_3']
           Econ4: ['econ4', 'economic_classification_4']
+          FunctionGroup1: ['fg1']
+          FunctionGroup2: ['fg2']
           Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
           Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
