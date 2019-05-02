@@ -6,16 +6,69 @@ budget-vs-actual-provincial:
     ### EPRE
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/12e1481d-2173-44f2-a468-b4bd022a84d5/resource/dde660d3-6267-4b5c-b562-97ced746bec8/download/estimates-of-provincial-expenditure-south-africa-2018-19.csv'
-        name: 'epre-2018-19'
-        format: 'csv'
+        name: epre-2018-19
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
       cache: true
+
+      # because otherwise string "addition" happens which looks like
+      # '7871520' + '9700802' + '-152' + '100000' = '100000-15297008027871520'
+    - run: string_to_int
+      parameters:
+        column_name: 'value'
 
     - run: filter
       parameters:
         resources: epre-2018-19
         in:
-          - financial_year: '2018'
+          - finyear: '2018'
+
+    - run: delete_fields
+      parameters:
+        resources: epre-2018-19
+        fields:
+          - voteno
+          - sprogno
+          - subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: epre-2018-19
+          key:
+            - "province"
+            - "department"
+            - "progno"
+            - "programme"
+            - "fg1"
+            - "fg2"
+            - "econ1"
+            - "econ2"
+            - "econ3"
+            - "econ4"
+            - "econ5"
+            - "finyear"
+            - "budget_phase"
+          delete: yes
+        target:
+          name: epre-2018-19
+          key: null
+        fields:
+          "province": {}
+          "department": {}
+          "progno": {}
+          "programme": {}
+          "fg1": {}
+          "fg2": {}
+          "econ1": {}
+          "econ2": {}
+          "econ3": {}
+          "econ4": {}
+          "econ5": {}
+          "finyear": {}
+          "budget_phase": {}
+          "value":
+            aggregate: sum
+        full: true
 
     - run: load
       parameters:
@@ -65,10 +118,53 @@ budget-vs-actual-provincial:
           - epre-2015-16
         fields:
           -
-            operation: format
-            target: Amount Kind
+            operation: constant
+            target: AmountKind
             with: 'Total'
 
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ2
+          with: '{economic_classification_1}'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ3
+          with: '{economic_classification_2}'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ4
+          with: '{economic_classification_3}'
+
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2017-18
+          - epre-2016-17
+          - epre-2015-16
+        fields:
+        - operation: format
+          target: corrected_econ5
+          with: '{economic_classification_4}'
 
     - run: concatenate
       parameters:
@@ -81,18 +177,21 @@ budget-vs-actual-provincial:
           name: budget-vs-actual-provincial
           path: data/budget-vs-actual-provincial.csv
         fields:
-          Budget Phase: ['budget phase', 'budget_phase']
+          BudgetPhase: ['budget_phase']
           Department: ['department']
-          Government: ['government']
-          Econ1: ['econ1', 'economic_classification_1']
-          Econ2: ['econ2', 'economic_classification_2']
-          Econ3: ['econ3', 'economic_classification_3']
-          Econ4: ['econ4', 'economic_classification_4']
-          Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
+          Government: ['government', 'province']
+          EconomicClassification1: ['econ1']
+          EconomicClassification2: ['econ2', 'corrected_econ2']
+          EconomicClassification3: ['econ3', 'corrected_econ3']
+          EconomicClassification4: ['econ4', 'corrected_econ4']
+          EconomicClassification5: ['econ5', 'corrected_econ5']
+          FunctionGroup1: ['fg1']
+          FunctionGroup2: ['fg2']
+          ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
-          Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
+          AmountKind: []
           Value: ['value']
-          Financial Year: ['finyear', 'FinYear', 'financial_year']
+          FinancialYear: ['finyear', 'FinYear', 'financial_year']
       cache: false
     - run: dump_to_path
       parameters:
