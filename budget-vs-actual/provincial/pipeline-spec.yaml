@@ -118,8 +118,8 @@ budget-vs-actual-provincial:
           - epre-2015-16
         fields:
           -
-            operation: format
-            target: Amount Kind
+            operation: constant
+            target: AmountKind
             with: 'Total'
 
     - run: add_computed_field
@@ -189,7 +189,7 @@ budget-vs-actual-provincial:
           FunctionGroup2: ['fg2']
           ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
-          AmountKind: ['amount kind', 'fy_descript', 'FY_Descript']
+          AmountKind: []
           Value: ['value']
           FinancialYear: ['finyear', 'FinYear', 'financial_year']
       cache: false
