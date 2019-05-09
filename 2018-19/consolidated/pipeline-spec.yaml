@@ -34,7 +34,7 @@ consolidated-expenditure-budget-2018-19:
       parameters:
         resources: consolidated-2018-19
         fields:
-          - name: 'Financial year'
+          - name: 'Fin Year'
             patterns:
               - find: (\d{4})/\d{2}
                 replace: \1

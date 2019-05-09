@@ -36,7 +36,7 @@ consolidated-expenditure-budget-2017-18:
         fields:
           - name: 'FinYear'
             patterns:
-              - find: (\d{4})/\d{2}
+              - find: (\d{4})_\d{2}
                 replace: \1
 
     - run: dump_to_path
