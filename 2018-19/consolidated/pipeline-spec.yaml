@@ -5,7 +5,7 @@ consolidated-expenditure-budget-2018-19:
 
     - run: load
       parameters:
-        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/consolidated/Budget+2018+-+Consolidated+Account+Pivot.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/consolidated/Budget+2018+-+Consolidated+account+Pivot.csv'
         name: 'consolidated-2018-19'
         format: 'csv'
       cache: false
