@@ -14,30 +14,34 @@ consolidated-expenditure-budget-2018-19:
       parameters:
         resources: consolidated-2018-19
         fields:
-          - name: 'Value'
+          - name: 'Fin Year'
+            patterns:
+              - find: (\d{4})/\d{2}
+                replace: \1
+          - name: Values
             patterns:
               - find: ','
                 replace: ''
+              - find: (\d+)\.\d+
+                replace: \1
+              - find: \(blank\)
+                replace: 0
+              - find: 0.0
+                replace: 0
+
+      cache: false
+
 
     - run: set_types
       parameters:
         resources: consolidated-2018-19
         types:
-          Value:
+          Values:
             type: number
 
     - run: multiply
       parameters:
-        value_field: 'Value'
-
-    - run: find_replace
-      parameters:
-        resources: consolidated-2018-19
-        fields:
-          - name: 'Fin Year'
-            patterns:
-              - find: (\d{4})/\d{2}
-                replace: \1
+        value_field: 'Values'
 
     - run: dump_to_path
       parameters:
