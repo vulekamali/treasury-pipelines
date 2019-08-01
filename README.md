@@ -1,9 +1,19 @@
 # Treasury Datapackage Pipelines
 
-Datapackage used to prepare data for upload to OpenSpending Packager while we're
+Pipelines used to prepare data for upload to OpenSpending Packager while we're
 not ready to use os-data-importers but need datapackage-pipelines
 
-list available pipelines with
+## Setup
+
+If not using docker, install Python dependencies:
+
+[Set up and activate a python 3 virtual environment.](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
+
+Install the dependencies in the virtual environment using `pip install -r requirements.txt`
+
+## Running pipelines
+
+List available pipelines with
 
 ```
 dpp
