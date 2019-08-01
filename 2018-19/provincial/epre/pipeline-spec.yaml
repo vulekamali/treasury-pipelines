@@ -8,7 +8,6 @@ epre-2018-19:
       name: 'epre-2018-19'
       format: 'xlsx'
     cache: true
-    validate: true
 
     # 0 in excel is int
   - run: int_to_string
