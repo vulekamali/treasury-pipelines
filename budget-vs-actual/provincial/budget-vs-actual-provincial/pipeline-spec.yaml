@@ -1,26 +1,27 @@
 budget-vs-actual-provincial:
-  title: Provincial budgeted and actual expenditure
+  title: Provincial budgeted and actual provincial expenditure 2019
   description: Combined dataset which consists of EPRE of all financial years.
   pipeline:
 
     ### EPRE
-
-  - run: load
-    parameters:
-      from: 'https://archive.org/download/prvepre201920fromjeffery20190603t14122/PRV%20EPRE%202019-20-from-jeffery-2019-06-03t1412%20%282%29.csv'
-      name: epre-2019-20
-      format: 'csv'
-    cache: true
-
-- run: string_to_int
+    - run: load
       parameters:
-        column_name: 'value'
+        name: epre-2019-20
+        from: 'http://archive.org/download/prvepre201920fromjeffery20190603t14122/PRV%20EPRE%202019-20-from-jeffery-2019-06-03t1412%20%282%29.csv'
+      cache: true
+
+    - run: set_types
+      parameters:
+        resources: epre-2019-20
+        types:
+          Value:
+            type: number
 
     - run: filter
       parameters:
         resources: epre-2019-20
         in:
-          - finyear: '2019'
+          - FinancialYear: '2019'
 
     - run: delete_fields
       parameters:
@@ -78,9 +79,12 @@ budget-vs-actual-provincial:
 
       # because otherwise string "addition" happens which looks like
       # '7871520' + '9700802' + '-152' + '100000' = '100000-15297008027871520'
-    - run: string_to_int
+    - run: set_types
       parameters:
-        column_name: 'value'
+        resources: epre-2018-19
+        types:
+          value:
+            type: number
 
     - run: filter
       parameters:
@@ -236,19 +240,20 @@ budget-vs-actual-provincial:
     - run: concatenate
       parameters:
         sources:
+          - epre-2019-20
           - epre-2018-19
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
         target:
-          name: budget-vs-actual-provincial
-          path: data/budget-vs-actual-provincial.csv
+          name: budget-vs-actual-provincial-2019
+          path: data/budget-vs-actual-provincial-2019.csv
         fields:
           BudgetPhase: ['budget_phase']
           Department: ['department']
           Government: ['government', 'province']
           EconomicClassification1: ['econ1']
-          EconomicClassification2: ['econ2', 'corrected_econ2']
+          EconomicClassification2: ['econ2']
           EconomicClassification3: ['econ3', 'corrected_econ3']
           EconomicClassification4: ['econ4', 'corrected_econ4']
           EconomicClassification5: ['econ5', 'corrected_econ5']
