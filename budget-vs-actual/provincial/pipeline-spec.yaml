@@ -246,8 +246,8 @@ budget-vs-actual-provincial:
           - epre-2016-17
           - epre-2015-16
         target:
-          name: budget-vs-actual-provincial-2019
-          path: data/budget-vs-actual-provincial-2019.csv
+          name: budget-vs-actual-provincial
+          path: data/budget-vs-actual-provincial.csv
         fields:
           BudgetPhase: ['budget_phase']
           Department: ['department']
