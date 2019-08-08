@@ -6,15 +6,85 @@ budget-vs-actual-provincial:
     ### EPRE
     - run: load
       parameters:
+        name: epre-2019-20
+        from: 'https://archive.org/download/prvepre201920fromjeffery20190603t14122/PRV%20EPRE%202019-20-from-jeffery-2019-06-03t1412%20%282%29.csv'
+      cache: true
+
+    - run: set_types
+      parameters:
+        resources: epre-2019-20
+        types:
+          Value:
+            type: number
+
+    - run: filter
+      parameters:
+        resources: epre-2019-20
+        in:
+          - FinancialYear: '2019'
+
+    - run: delete_fields
+      parameters:
+        resources: epre-2019-20
+        fields:
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: epre-2019-20
+          key:
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
+          delete: yes
+        target:
+          name: epre-2019-20
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
+            aggregate: sum
+        full: true
+
+    - run: load
+      parameters:
         name: epre-2018-19
         from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
       cache: true
 
       # because otherwise string "addition" happens which looks like
       # '7871520' + '9700802' + '-152' + '100000' = '100000-15297008027871520'
-    - run: string_to_int
+    - run: set_types
       parameters:
-        column_name: 'value'
+        resources: epre-2018-19
+        types:
+          value:
+            type: number
 
     - run: filter
       parameters:
@@ -112,6 +182,7 @@ budget-vs-actual-provincial:
     - run: add_computed_field
       parameters:
         resources:
+          - epre-2019-20
           - epre-2018-19
           - epre-2017-18
           - epre-2016-17
@@ -169,6 +240,7 @@ budget-vs-actual-provincial:
     - run: concatenate
       parameters:
         sources:
+          - epre-2019-20
           - epre-2018-19
           - epre-2017-18
           - epre-2016-17
@@ -180,7 +252,7 @@ budget-vs-actual-provincial:
           BudgetPhase: ['budget_phase']
           Department: ['department']
           Government: ['government', 'province']
-          EconomicClassification1: ['econ1']
+          EconomicClassification1: ['econ1', 'corrected_econ1']
           EconomicClassification2: ['econ2', 'corrected_econ2']
           EconomicClassification3: ['econ3', 'corrected_econ3']
           EconomicClassification4: ['econ4', 'corrected_econ4']
