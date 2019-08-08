@@ -7,7 +7,7 @@ budget-vs-actual-provincial:
     - run: load
       parameters:
         name: epre-2019-20
-        from: 'http://archive.org/download/prvepre201920fromjeffery20190603t14122/PRV%20EPRE%202019-20-from-jeffery-2019-06-03t1412%20%282%29.csv'
+        from: 'https://archive.org/download/prvepre201920fromjeffery20190603t14122/PRV%20EPRE%202019-20-from-jeffery-2019-06-03t1412%20%282%29.csv'
       cache: true
 
     - run: set_types
