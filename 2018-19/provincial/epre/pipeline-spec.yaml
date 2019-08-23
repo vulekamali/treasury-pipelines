@@ -144,22 +144,35 @@ epre-2018-19:
         name: epre-2018-19
         key: null
       fields:
-        "Province": {}
-        "VoteNo": {}
+        Government:
+          name: "Province"
+        VoteNumber:
+          name: "VoteNo"
         "Department": {}
-        "ProgNo": {}
+        ProgNumber:
+          name: "ProgNo"
         "Programme": {}
-        "SprogNo": {}
+        SubprogNumber:
+          name: "SprogNo"
         "Subprogramme": {}
-        "FG1": {}
-        "FG2": {}
-        "Econ1": {}
-        "Econ2": {}
-        "Econ3": {}
-        "Econ4": {}
-        "Econ5": {}
-        "FinYear": {}
-        "Budget Phase": {}
+        FunctionGroup1:
+          name: "FG1"
+        FunctionGroup2:
+          name: "FG2"
+        EconomicClassification1:
+          name: "Econ1"
+        EconomicClassification2:
+          name: "Econ2"
+        EconomicClassification3:
+          name: "Econ3"
+        EconomicClassification4:
+          name: "Econ4"
+        EconomicClassification5:
+          name: "Econ5"
+        FinancialYear:
+          name: "FinYear"
+        BudgetPhase:
+          name: "Budget Phase"
         "Value":
           aggregate: sum
       full: true
