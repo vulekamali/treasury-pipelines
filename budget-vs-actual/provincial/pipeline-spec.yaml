@@ -17,7 +17,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
@@ -77,7 +76,7 @@ budget-vs-actual-provincial:
     ### EPRE 2018-19
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/epre-2018-19-processed-2019-08-23t1245.csv'
         name: epre-2018-19
         format: 'csv'
       cache: true
@@ -88,7 +87,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
@@ -159,7 +157,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
@@ -230,7 +227,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
@@ -301,7 +297,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
@@ -372,7 +367,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
@@ -444,7 +438,6 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
-            on_error: ignore
 
     - run: filter
       parameters:
