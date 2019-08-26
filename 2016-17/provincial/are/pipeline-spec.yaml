@@ -1,0 +1,167 @@
+are-2016-17:
+  title: Annual Report Expenditure 2016-17
+  description: Annual Report Expenditure, with Audited Outcome and Final Appropriation.
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/PRV+AR+2016-17.xlsx"
+      name: 'are-2016-17'
+      format: 'xlsx'
+    cache: true
+
+  - run: delete_fields
+    parameters:
+      resources: are-2016-17
+      fields:
+      - BudYear
+      - ValueIndi
+      - Combo
+      - GFS1
+      - GFS2
+      - GFS3
+
+  - run: filter
+    parameters:
+      resources: are-2016-17
+      out:
+        - FY_Descript: Variance
+  - run: filter
+    parameters:
+      resources: are-2016-17
+      out:
+        - FY_Descript: Revised payments
+
+  - run: add_computed_field
+    parameters:
+      resources: are-2016-17
+      fields:
+      - operation: format
+        target: Budget Phase
+        with: '{FY_Descript}'
+
+  - run: find_replace
+    parameters:
+      resources: are-2016-17
+      fields:
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: ^(Actual Payments)
+          replace: "Audit Outcome"
+        - find: ^Virement and shifting of funds
+          replace: "Final Appropriation"
+      - name: FY_Descript
+        patterns:
+        - find: ^(Actual Payments)
+          replace: Total
+        - find: ^(Adjusted Appropriation)
+          replace: Total
+        - find: ^(Final Appropriation)
+          replace: Total
+
+  - run: fix_provinces
+    parameters:
+      government_column: 'Province'
+
+  - run: department_names
+    parameters:
+      sphere: provincial
+      financial_year: 2016-17
+      department_column: 'Department'
+      government_column: 'Province'
+
+  - run: join
+    parameters:
+      source:
+        name: are-2016-17
+        key:
+          - "Source"
+          - "VoteNo"
+          - "Province"
+          - "Department"
+          - "ProgNo"
+          - "Programme"
+          - "SprogNo"
+          - "Subprogramme"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "FY_Descript"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: are-2016-17
+        key: null
+      fields:
+        "Source": {}
+        Government:
+          name: "Province"
+        VoteNumber:
+          name: "VoteNo"
+        "Department": {}
+        ProgNumber:
+          name: "ProgNo"
+        "Programme": {}
+        SubprogNumber:
+          name: "SprogNo"
+        "Subprogramme": {}
+        FunctionGroup1:
+          name: "FG1"
+        FunctionGroup2:
+          name: "FG2"
+        EconomicClassification1:
+          name: "Econ1"
+        EconomicClassification2:
+          name: "Econ2"
+        EconomicClassification3:
+          name: "Econ3"
+        EconomicClassification4:
+          name: "Econ4"
+        EconomicClassification5:
+          name: "Econ5"
+        "FY_Descript": {}
+        FinancialYear:
+          name: "FinYear"
+        BudgetPhase:
+          name: "Budget Phase"
+        "Value":
+          aggregate: sum
+      full: true
+
+  # Rename FY_Descript to Amount Kind
+  - run: add_computed_field
+    parameters:
+      resources: are-2016-17
+      fields:
+        - operation: format
+          target: Amount Kind
+          with: '{FY_Descript}'
+  - run: delete_fields
+    parameters:
+      resources: are-2016-17
+      fields:
+        - FY_Descript
+
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+
+  - run: find_replace
+    parameters:
+      resources: are-2016-17
+      fields:
+        - name: Value
+          patterns:
+            - find: (\d+)\.\d+
+              replace: \1
+
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
