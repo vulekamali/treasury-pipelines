@@ -61,14 +61,6 @@ are-2015-16:
             replace: Total
           - find: ^(Final Appropriation)
             replace: Total
-        - name: Department
-          patterns:
-          - find: ^(SOCIAL DEVELOPMENT AND SPECIAL PROGRAMMES)
-            replace: "SOCIAL DEVELOPMENT"
-          - find: ^(ECONOMIC DEVELOPMENT & SMALL BUSINESS DEVELOPMENT, TOURISM & ENVIRONMENTAL AFFAIRS)
-            replace: "Economic and Small Business Development, Tourism and Environmental Affairs"
-          - find: ^(PUBLIC WORKS & INFRASTRUCTURE)
-            replace: "Public Works and Infrastructure"
 
     - run: fix_provinces
       parameters:
@@ -78,14 +70,6 @@ are-2015-16:
       parameters:
         sphere: provincial
         financial_year: 2015-16
-        department_column: 'Department'
-        government_column: 'Province'
-
-    - run: programme_names
-      parameters:
-        sphere: provincial
-        financial_year: 2015-16
-        programme_name_column: 'Programme'
         department_column: 'Department'
         government_column: 'Province'
 
