@@ -1,13 +1,14 @@
 budget-vs-actual-provincial:
   title: Provincial budgeted and actual expenditure
-  description: Combined dataset which consists of EPRE of all financial years.
+  description: Combined dataset which consists of EPRE and ARE of all financial years.
   pipeline:
 
-    ### EPRE
+    ### EPRE 2019-20
     - run: load
       parameters:
-        name: epre-2019-20
         from: 'https://archive.org/download/prvepre201920fromjeffery20190603t14122/PRV%20EPRE%202019-20-from-jeffery-2019-06-03t1412%20%282%29.csv'
+        name: epre-2019-20
+        format: 'csv'
       cache: true
 
     - run: set_types
@@ -16,12 +17,14 @@ budget-vs-actual-provincial:
         types:
           Value:
             type: number
+            on_error: ignore
 
     - run: filter
       parameters:
         resources: epre-2019-20
         in:
           - FinancialYear: '2019'
+          - BudgetPhase: 'Main Appropriation'
 
     - run: delete_fields
       parameters:
@@ -71,113 +74,434 @@ budget-vs-actual-provincial:
             aggregate: sum
         full: true
 
+    ### EPRE 2018-19
     - run: load
       parameters:
-        name: epre-2018-19
+#        from: '../../2018-19/provincial/epre/processed/data/epre-2018-19.csv'
         from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
+        name: epre-2018-19
+        format: 'csv'
       cache: true
 
-      # because otherwise string "addition" happens which looks like
-      # '7871520' + '9700802' + '-152' + '100000' = '100000-15297008027871520'
     - run: set_types
       parameters:
         resources: epre-2018-19
         types:
-          value:
+          Value:
             type: number
+            on_error: ignore
 
     - run: filter
       parameters:
         resources: epre-2018-19
         in:
-          - finyear: '2018'
+          - FinancialYear: '2018'
+          - BudgetPhase: 'Main Appropriation'
 
     - run: delete_fields
       parameters:
         resources: epre-2018-19
         fields:
-          - voteno
-          - sprogno
-          - subprogramme
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
 
     - run: join
       parameters:
         source:
           name: epre-2018-19
           key:
-            - "province"
-            - "department"
-            - "progno"
-            - "programme"
-            - "fg1"
-            - "fg2"
-            - "econ1"
-            - "econ2"
-            - "econ3"
-            - "econ4"
-            - "econ5"
-            - "finyear"
-            - "budget_phase"
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
           delete: yes
         target:
           name: epre-2018-19
           key: null
         fields:
-          "province": {}
-          "department": {}
-          "progno": {}
-          "programme": {}
-          "fg1": {}
-          "fg2": {}
-          "econ1": {}
-          "econ2": {}
-          "econ3": {}
-          "econ4": {}
-          "econ5": {}
-          "finyear": {}
-          "budget_phase": {}
-          "value":
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
             aggregate: sum
         full: true
 
+    ### EPRE 2017-18
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/9ac6e267-77e3-44a4-bd99-9a31a7112875/resource/4d5579ca-de40-4c2f-8d5b-55e4432da78a/download/estimates-of-provincial-expenditure-south-africa-2017-18.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/epre-2017-18-processed-2019-08-26t1020.csv'
         name: 'epre-2017-18'
         format: 'csv'
       cache: true
+
+    - run: set_types
+      parameters:
+        resources: epre-2017-18
+        types:
+          Value:
+            type: number
+            on_error: ignore
 
     - run: filter
       parameters:
         resources: epre-2017-18
         in:
-          - financial_year: '2017'
+          - FinancialYear: '2017'
+          - BudgetPhase: 'Main Appropriation'
 
+    - run: delete_fields
+      parameters:
+        resources: epre-2017-18
+        fields:
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: epre-2017-18
+          key:
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
+          delete: yes
+        target:
+          name: epre-2017-18
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
+            aggregate: sum
+        full: true
+
+    ### EPRE 2016-17
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/918a7ab3-717c-48a4-a665-bc8f88cd92d8/resource/eb07976c-5f3b-48be-84f1-3589f83da123/download/estimates-of-provincial-expenditure-south-africa-2016-17.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/epre-2016-17-processed-2019-08-26t1020.csv'
         name: 'epre-2016-17'
         format: 'csv'
       cache: true
+
+    - run: set_types
+      parameters:
+        resources: epre-2016-17
+        types:
+          Value:
+            type: number
+            on_error: ignore
 
     - run: filter
       parameters:
         resources: epre-2016-17
         in:
-          - financial_year: '2016'
+          - FinancialYear: '2016'
+          - BudgetPhase: 'Main Appropriation'
 
+    - run: delete_fields
+      parameters:
+        resources: epre-2016-17
+        fields:
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: epre-2016-17
+          key:
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
+          delete: yes
+        target:
+          name: epre-2016-17
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
+            aggregate: sum
+        full: true
+
+    ### EPRE 2015-16
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/5c619f67-c06b-489e-b8ef-7d8842975f8f/resource/b65549ba-927f-44a5-a780-ccfd8bb8ecf8/download/estimates-of-provincial-expenditure-south-africa-2015-16.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/epre-2015-16-processed-2019-08-26t1020.csv'
         name: 'epre-2015-16'
         format: 'csv'
       cache: true
+
+    - run: set_types
+      parameters:
+        resources: epre-2015-16
+        types:
+          Value:
+            type: number
+            on_error: ignore
 
     - run: filter
       parameters:
         resources: epre-2015-16
         in:
-          - financial_year: '2015'
+          - FinancialYear: '2015'
+          - BudgetPhase: 'Main Appropriation'
+
+    - run: delete_fields
+      parameters:
+        resources: epre-2015-16
+        fields:
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: epre-2015-16
+          key:
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
+          delete: yes
+        target:
+          name: epre-2015-16
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
+            aggregate: sum
+        full: true
+
+    ### ARE 2016-17
+    - run: load
+      parameters:
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/are-2016-17-processed-2019-08-26t1500.csv'
+        name: 'are-2016-17'
+        format: 'csv'
+      cache: true
+
+    - run: set_types
+      parameters:
+        resources: are-2016-17
+        types:
+          Value:
+            type: number
+            on_error: ignore
+
+    - run: filter
+      parameters:
+        resources: are-2016-17
+        in:
+          - FinancialYear: '2016'
+          - BudgetPhase: 'Final Appropriation'
+          - BudgetPhase: 'Audit Outcome'
+
+    - run: delete_fields
+      parameters:
+        resources: are-2016-17
+        fields:
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: are-2016-17
+          key:
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
+          delete: yes
+        target:
+          name: are-2016-17
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
+            aggregate: sum
+        full: true
+
+    ### ARE 2015-16
+    - run: load
+      parameters:
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/are-2015-16-processed-2019-08-26t1500.csv'
+        name: 'are-2015-16'
+        format: 'csv'
+      cache: true
+
+    - run: set_types
+      parameters:
+        resources: are-2015-16
+        types:
+          Value:
+            type: number
+            on_error: ignore
+
+    - run: filter
+      parameters:
+        resources: are-2015-16
+        in:
+          - FinancialYear: '2015'
+          - BudgetPhase: 'Final Appropriation'
+          - BudgetPhase: 'Audit Outcome'
+
+    - run: delete_fields
+      parameters:
+        resources: are-2015-16
+        fields:
+          - VoteNumber
+          - SubprogNumber
+          - Subprogramme
+
+    - run: join
+      parameters:
+        source:
+          name: are-2015-16
+          key:
+            - "Government"
+            - "Department"
+            - "ProgNumber"
+            - "Programme"
+            - "FunctionGroup1"
+            - "FunctionGroup2"
+            - "EconomicClassification1"
+            - "EconomicClassification2"
+            - "EconomicClassification3"
+            - "EconomicClassification4"
+            - "EconomicClassification5"
+            - "FinancialYear"
+            - "BudgetPhase"
+          delete: yes
+        target:
+          name: are-2015-16
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "Value":
+            aggregate: sum
+        full: true
 
     - run: add_computed_field
       parameters:
@@ -187,6 +511,8 @@ budget-vs-actual-provincial:
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
+          - are-2016-17
+          - are-2015-16
         fields:
           -
             operation: constant
@@ -196,46 +522,62 @@ budget-vs-actual-provincial:
     - run: add_computed_field
       parameters:
         resources:
+          - epre-2019-20
+          - epre-2018-19
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
+          - are-2016-17
+          - are-2015-16
         fields:
         - operation: format
           target: corrected_econ2
-          with: '{economic_classification_1}'
+          with: '{EconomicClassification1}'
 
     - run: add_computed_field
       parameters:
         resources:
+          - epre-2019-20
+          - epre-2018-19
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
+          - are-2016-17
+          - are-2015-16
         fields:
         - operation: format
           target: corrected_econ3
-          with: '{economic_classification_2}'
+          with: '{EconomicClassification2}'
 
     - run: add_computed_field
       parameters:
         resources:
+          - epre-2019-20
+          - epre-2018-19
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
+          - are-2016-17
+          - are-2015-16
         fields:
         - operation: format
           target: corrected_econ4
-          with: '{economic_classification_3}'
+          with: '{EconomicClassification3}'
 
     - run: add_computed_field
       parameters:
         resources:
+          - epre-2019-20
+          - epre-2018-19
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
+          - are-2016-17
+          - are-2015-16
         fields:
         - operation: format
           target: corrected_econ5
-          with: '{economic_classification_4}'
+          with: '{EconomicClassification4}'
 
     - run: concatenate
       parameters:
@@ -245,6 +587,8 @@ budget-vs-actual-provincial:
           - epre-2017-18
           - epre-2016-17
           - epre-2015-16
+          - are-2016-17
+          - are-2015-16
         target:
           name: budget-vs-actual-provincial
           path: data/budget-vs-actual-provincial.csv
