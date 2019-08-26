@@ -1,0 +1,192 @@
+epre-2017-18:
+  title: Estimates of Provincial Expenditure 2017-18
+  description: Provincial budgets
+  pipeline:
+  - run: load
+    parameters:
+      from: "https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/epre/PRV+EPRE+2017-18.xlsx"
+      name: 'epre-2017-18'
+      format: 'xlsx'
+    cache: true
+
+    # 0 in excel is int
+  - run: int_to_string
+    parameters:
+      column_name: 'FG1'
+
+    # 0 in excel is int
+  - run: int_to_string
+    parameters:
+      column_name: 'FG2'
+
+    # 0 in excel is int
+  - run: int_to_string
+    parameters:
+      column_name: 'Econ1'
+
+    # 0 in excel is int
+  - run: fix_provinces
+    parameters:
+      government_column: 'Province'
+
+  - run: department_names
+    parameters:
+      sphere: provincial
+      financial_year: 2017-18
+      department_column: 'Department'
+      government_column: 'Province'
+
+  - run: filter
+    parameters:
+      resources: epre-2017-18
+      out:
+        - FY_Descript: Est. under/(over)
+  - run: filter
+    parameters:
+      resources: epre-2017-18
+      out:
+        - FY_Descript: Other adjustments
+  - run: filter
+    parameters:
+      resources: epre-2017-18
+      out:
+        - FY_Descript: Revised estimate
+  - run: filter
+    parameters:
+      resources: epre-2017-18
+      out:
+        - FY_Descript: Roll-overs
+  - run: filter
+    parameters:
+      resources: epre-2017-18
+      out:
+        - FY_Descript: "U&U"
+  - run: filter
+    parameters:
+      resources: epre-2017-18
+      out:
+        - FY_Descript: Virement
+
+  - run: add_computed_field
+    parameters:
+      resources: epre-2017-18
+      fields:
+      - operation: format
+        target: Budget Phase
+        with: '{FY_Descript}'
+
+  - run: find_replace
+    parameters:
+      resources: epre-2017-18
+      fields:
+      - name: FinYear
+        patterns:
+        - find: (\d{4})_\d{2}
+          replace: \1
+      - name: Budget Phase
+        patterns:
+        - find: "Actual"
+          replace: "Audited Outcome"
+      - name: Budget Phase
+        patterns:
+        - find: "Adjusted budget"
+          replace: "Adjusted appropriation"
+      - name: Budget Phase
+        patterns:
+        - find: "Main budget"
+          replace: "Main appropriation"
+      - name: Budget Phase
+        patterns:
+        - find: "MTEF"
+          replace: "Medium Term Estimates"
+
+  - run: estimates_of_expenditure_tabled_year_phase
+    parameters:
+      financial_year: "2017"
+
+  - run: delete_fields
+    parameters:
+      resources: epre-2017-18
+      fields:
+      - Source
+      - BudYear
+      - ValueIndi
+      - Combo
+      - GFS1
+      - GFS2
+      - GFS3
+      - FY_Descript
+
+  # Deduplicate
+  - run: join
+    parameters:
+      source:
+        name: epre-2017-18
+        key:
+          - "Province"
+          - "VoteNo"
+          - "Department"
+          - "ProgNo"
+          - "Programme"
+          - "SprogNo"
+          - "Subprogramme"
+          - "FG1"
+          - "FG2"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "Budget Phase"
+        delete: yes
+      target:
+        name: epre-2017-18
+        key: null
+      fields:
+        Government:
+          name: "Province"
+        VoteNumber:
+          name: "VoteNo"
+        "Department": {}
+        ProgNumber:
+          name: "ProgNo"
+        "Programme": {}
+        SubprogNumber:
+          name: "SprogNo"
+        "Subprogramme": {}
+        FunctionGroup1:
+          name: "FG1"
+        FunctionGroup2:
+          name: "FG2"
+        EconomicClassification1:
+          name: "Econ1"
+        EconomicClassification2:
+          name: "Econ2"
+        EconomicClassification3:
+          name: "Econ3"
+        EconomicClassification4:
+          name: "Econ4"
+        EconomicClassification5:
+          name: "Econ5"
+        FinancialYear:
+          name: "FinYear"
+        BudgetPhase:
+          name: "Budget Phase"
+        "Value":
+          aggregate: sum
+      full: true
+
+  - run: multiply
+    parameters:
+      value_field: 'Value'
+
+  - run: round
+    parameters:
+      resources: epre-2017-18
+      value_field: 'Value'
+
+  - run: dump_to_path
+    parameters:
+      out-path: './processed'
+      format: 'csv'
