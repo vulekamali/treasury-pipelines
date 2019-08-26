@@ -77,7 +77,6 @@ budget-vs-actual-provincial:
     ### EPRE 2018-19
     - run: load
       parameters:
-#        from: '../../2018-19/provincial/epre/processed/data/epre-2018-19.csv'
         from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-provincial-expenditure-2018-19-uploaded-2019-05-01t1328/final/data/epre-2018-19.csv'
         name: epre-2018-19
         format: 'csv'
