@@ -173,8 +173,6 @@ budget-vs-actual-provincial:
         resources: are-2016-17
         in:
           - FinancialYear: '2016'
-          - BudgetPhase: 'Final Appropriation'
-          - BudgetPhase: 'Audit Outcome'
 
     - run: delete_fields
       parameters:
@@ -204,8 +202,6 @@ budget-vs-actual-provincial:
         resources: are-2015-16
         in:
           - FinancialYear: '2015'
-          - BudgetPhase: 'Final Appropriation'
-          - BudgetPhase: 'Audit Outcome'
 
     - run: delete_fields
       parameters:
