@@ -211,21 +211,13 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
-    - run: add_computed_field
+    - run: filter
       parameters:
         resources:
-          - epre-2019-20
-          - epre-2018-19
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
           - are-2016-17
           - are-2015-16
-        fields:
-          -
-            operation: constant
-            target: AmountKind
-            with: 'Total'
+        in:
+          - Amount Kind: 'Total'
 
     - run: concatenate
       parameters:
@@ -253,7 +245,7 @@ budget-vs-actual-provincial:
           FunctionGroup2: ['fg2']
           ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
-          AmountKind: []
+          AmountKind: ['Amount Kind']
           Value: ['value']
           FinancialYear: ['finyear', 'FinYear', 'financial_year']
       cache: false
