@@ -33,46 +33,6 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
-    - run: join
-      parameters:
-        source:
-          name: epre-2019-20
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: epre-2019-20
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
-
     ### EPRE 2018-19
     - run: load
       parameters:
@@ -102,46 +62,6 @@ budget-vs-actual-provincial:
           - VoteNumber
           - SubprogNumber
           - Subprogramme
-
-    - run: join
-      parameters:
-        source:
-          name: epre-2018-19
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: epre-2018-19
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
 
     ### EPRE 2017-18
     - run: load
@@ -173,46 +93,6 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
-    - run: join
-      parameters:
-        source:
-          name: epre-2017-18
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: epre-2017-18
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
-
     ### EPRE 2016-17
     - run: load
       parameters:
@@ -243,46 +123,6 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
-    - run: join
-      parameters:
-        source:
-          name: epre-2016-17
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: epre-2016-17
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
-
     ### EPRE 2015-16
     - run: load
       parameters:
@@ -312,46 +152,6 @@ budget-vs-actual-provincial:
           - VoteNumber
           - SubprogNumber
           - Subprogramme
-
-    - run: join
-      parameters:
-        source:
-          name: epre-2015-16
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: epre-2015-16
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
 
     ### ARE 2016-17
     - run: load
@@ -384,46 +184,6 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
-    - run: join
-      parameters:
-        source:
-          name: are-2016-17
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: are-2016-17
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
-
     ### ARE 2015-16
     - run: load
       parameters:
@@ -455,46 +215,6 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
-    - run: join
-      parameters:
-        source:
-          name: are-2015-16
-          key:
-            - "Government"
-            - "Department"
-            - "ProgNumber"
-            - "Programme"
-            - "FunctionGroup1"
-            - "FunctionGroup2"
-            - "EconomicClassification1"
-            - "EconomicClassification2"
-            - "EconomicClassification3"
-            - "EconomicClassification4"
-            - "EconomicClassification5"
-            - "FinancialYear"
-            - "BudgetPhase"
-          delete: yes
-        target:
-          name: are-2015-16
-          key: null
-        fields:
-          "Government": {}
-          "Department": {}
-          "ProgNumber": {}
-          "Programme": {}
-          "FunctionGroup1": {}
-          "FunctionGroup2": {}
-          "EconomicClassification1": {}
-          "EconomicClassification2": {}
-          "EconomicClassification3": {}
-          "EconomicClassification4": {}
-          "EconomicClassification5": {}
-          "FinancialYear": {}
-          "BudgetPhase": {}
-          "Value":
-            aggregate: sum
-        full: true
-
     - run: add_computed_field
       parameters:
         resources:
@@ -510,66 +230,6 @@ budget-vs-actual-provincial:
             operation: constant
             target: AmountKind
             with: 'Total'
-
-    - run: add_computed_field
-      parameters:
-        resources:
-          - epre-2019-20
-          - epre-2018-19
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
-          - are-2016-17
-          - are-2015-16
-        fields:
-        - operation: format
-          target: corrected_econ2
-          with: '{EconomicClassification1}'
-
-    - run: add_computed_field
-      parameters:
-        resources:
-          - epre-2019-20
-          - epre-2018-19
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
-          - are-2016-17
-          - are-2015-16
-        fields:
-        - operation: format
-          target: corrected_econ3
-          with: '{EconomicClassification2}'
-
-    - run: add_computed_field
-      parameters:
-        resources:
-          - epre-2019-20
-          - epre-2018-19
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
-          - are-2016-17
-          - are-2015-16
-        fields:
-        - operation: format
-          target: corrected_econ4
-          with: '{EconomicClassification3}'
-
-    - run: add_computed_field
-      parameters:
-        resources:
-          - epre-2019-20
-          - epre-2018-19
-          - epre-2017-18
-          - epre-2016-17
-          - epre-2015-16
-          - are-2016-17
-          - are-2015-16
-        fields:
-        - operation: format
-          target: corrected_econ5
-          with: '{EconomicClassification4}'
 
     - run: concatenate
       parameters:
@@ -588,11 +248,11 @@ budget-vs-actual-provincial:
           BudgetPhase: ['budget_phase']
           Department: ['department']
           Government: ['government', 'province']
-          EconomicClassification1: ['econ1', 'corrected_econ1']
-          EconomicClassification2: ['econ2', 'corrected_econ2']
-          EconomicClassification3: ['econ3', 'corrected_econ3']
-          EconomicClassification4: ['econ4', 'corrected_econ4']
-          EconomicClassification5: ['econ5', 'corrected_econ5']
+          EconomicClassification1: ['econ1']
+          EconomicClassification2: ['econ2']
+          EconomicClassification3: ['econ3']
+          EconomicClassification4: ['econ4']
+          EconomicClassification5: ['econ5']
           FunctionGroup1: ['fg1']
           FunctionGroup2: ['fg2']
           ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number']
