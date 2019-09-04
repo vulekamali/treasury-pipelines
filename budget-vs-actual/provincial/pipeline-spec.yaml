@@ -153,10 +153,24 @@ budget-vs-actual-provincial:
           - SubprogNumber
           - Subprogramme
 
+    - run: add_computed_field
+      parameters:
+        resources:
+          - epre-2015-16
+          - epre-2016-17
+          - epre-2017-18
+          - epre-2018-19
+          - epre-2019-20
+        fields:
+          - operation: constant
+            target: AmountKind
+            with: Total
+
+
     ### ARE 2016-17
     - run: load
       parameters:
-        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/are-2016-17-processed-2019-08-26t1500.csv'
+        from: '/home/jdb/projects/vulekamali/treasury-pipelines/2016-17/provincial/are/processed/data/are-2016-17-processed-2019-09-04.csv'
         name: 'are-2016-17'
         format: 'csv'
       cache: true
@@ -185,7 +199,7 @@ budget-vs-actual-provincial:
     ### ARE 2015-16
     - run: load
       parameters:
-        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/are-2015-16-processed-2019-08-26t1500.csv'
+        from: '/home/jdb/projects/vulekamali/treasury-pipelines/2015-16/provincial/are/processed/data/are-2015-16-processed-2019-09-04.csv'
         name: 'are-2015-16'
         format: 'csv'
       cache: true
@@ -217,7 +231,7 @@ budget-vs-actual-provincial:
           - are-2016-17
           - are-2015-16
         in:
-          - Amount Kind: 'Total'
+          - AmountKind: 'Total'
 
     - run: concatenate
       parameters:
@@ -231,7 +245,6 @@ budget-vs-actual-provincial:
           - are-2015-16
         target:
           name: budget-vs-actual-provincial
-          path: data/budget-vs-actual-provincial.csv
         fields:
           BudgetPhase: ['budget_phase']
           Department: ['department']
@@ -245,10 +258,52 @@ budget-vs-actual-provincial:
           FunctionGroup2: ['fg2']
           ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number']
           Programme: ['programme']
-          AmountKind: ['Amount Kind']
+          AmountKind: []
           Value: ['value']
           FinancialYear: ['finyear', 'FinYear', 'financial_year']
       cache: false
+
+    - run: join
+      parameters:
+        source:
+          name: budget-vs-actual-provincial
+          key:
+            - Government
+            - Department
+            - ProgNumber
+            - Programme
+            - EconomicClassification1
+            - EconomicClassification2
+            - EconomicClassification3
+            - EconomicClassification4
+            - EconomicClassification5
+            - FunctionGroup1
+            - FunctionGroup2
+            - FinancialYear
+            - BudgetPhase
+            - AmountKind
+        target:
+          name: budget-vs-actual-provincial
+          key: null
+        fields:
+          "Government": {}
+          "Department": {}
+          "ProgNumber": {}
+          "Programme": {}
+          "EconomicClassification1": {}
+          "EconomicClassification2": {}
+          "EconomicClassification3": {}
+          "EconomicClassification4": {}
+          "EconomicClassification5": {}
+          "FunctionGroup1": {}
+          "FunctionGroup2": {}
+          "FinancialYear": {}
+          "BudgetPhase": {}
+          "AmountKind": {}
+          "Value":
+            aggregate: sum
+        full: true
+
     - run: dump_to_path
       parameters:
         out-path: './processed'

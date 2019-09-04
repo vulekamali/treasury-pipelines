@@ -72,3 +72,35 @@ e.g.
 ```
 
 In this case you should verify that the kind of duplication that's happening can be solved by summing all the duplicates, and adding the `join` processor's _deduplication_ mode.
+
+Troubleshooting:
+----------------
+
+`dpp` output like this (`'NoneType' object has no attribute 'startswith'` in particular) sometimes means a spec section is indented differently to the rest. This often happens when copying between specs.
+
+```
+- ./2016-17/provincial/are/are-2016-17
+- ./2014-15/national/ene/ene-2014-15 (*)
+- ./budget-vs-actual/national/budget-vs-actual-national (*)
+Traceback (most recent call last):
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/bin/dpp", line 11, in <module>
+    load_entry_point('datapackage-pipelines==2.0.0', 'console_scripts', 'dpp')()
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/click/core.py", line 764, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/click/core.py", line 717, in main
+    rv = self.invoke(ctx)
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/click/core.py", line 1114, in invoke
+    return Command.invoke(self, ctx)
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/click/core.py", line 956, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/click/core.py", line 555, in invoke
+    return callback(*args, **kwargs)
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/click/decorators.py", line 17, in new_func
+    return f(get_current_context(), *args, **kwargs)
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/datapackage_pipelines/cli.py", line 20, in cli
+    for spec in pipelines():  # type: PipelineSpec
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/datapackage_pipelines/specs/specs.py", line 73, in pipelines
+    for prefix in prefixes):
+  File "/home/jdb/projects/vulekamali/treasury-pipelines/env/lib/python3.7/site-packages/datapackage_pipelines/specs/specs.py", line 73, in <genexpr>
+    for prefix in prefixes):
+AttributeError: 'NoneType' object has no attribute 'startswith'
