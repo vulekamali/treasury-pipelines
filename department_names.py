@@ -39,7 +39,7 @@ def process_row(row, row_index,
                 parameters, stats):
     department_column = parameters.get('department_column', 'department')
     government_column = parameters.get('government_column', 'government')
-    department_slug = slugify(row[department_column], to_lower=True)
+    department_slug = slugify(row[department_column])
     sphere = parameters['sphere']
     if sphere == 'national':
         government_name = 'South Africa'
