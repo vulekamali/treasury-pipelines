@@ -57,6 +57,8 @@ are-2016-17:
         patterns:
         - find: ^(Actual Payments)
           replace: "Audit Outcome"
+        - find: ^(Adjusted Appropriation)
+          replace: Adjusted appropriation
       - name: FY_Descript
         patterns:
         - find: ^(Actual Payments)
