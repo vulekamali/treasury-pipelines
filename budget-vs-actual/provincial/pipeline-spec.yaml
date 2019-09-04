@@ -170,7 +170,7 @@ budget-vs-actual-provincial:
     ### ARE 2016-17
     - run: load
       parameters:
-        from: '/home/jdb/projects/vulekamali/treasury-pipelines/2016-17/provincial/are/processed/data/are-2016-17-processed-2019-09-04.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/are-2016-17-processed-2019-09-04t1604.csv'
         name: 'are-2016-17'
         format: 'csv'
       cache: true
@@ -199,7 +199,7 @@ budget-vs-actual-provincial:
     ### ARE 2015-16
     - run: load
       parameters:
-        from: '/home/jdb/projects/vulekamali/treasury-pipelines/2015-16/provincial/are/processed/data/are-2015-16-processed-2019-09-04.csv'
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/are/are-2015-16-processed-2019-09-04.csv'
         name: 'are-2015-16'
         format: 'csv'
       cache: true

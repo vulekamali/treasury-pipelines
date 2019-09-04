@@ -54,7 +54,7 @@ def process_row(row, row_index,
     else:
         warning_key = (government_name, row[department_column])
         if warning_key not in warned:
-            logging.warn("No authoritative department name found for %s - %s (%s)",
+            logging.warning("No authoritative department name found for %s - %s (%s)",
                          government_name, row[department_column], department_slug)
             warned[warning_key] = True
     return row
