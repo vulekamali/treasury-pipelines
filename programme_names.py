@@ -37,7 +37,7 @@ def modify_datapackage(datapackage, parameters, stats):
         government = row[0]
         department = row[1]
         programme_name = row[2]
-        programme_name_slug = slugify(programme_name, to_lower=True)
+        programme_name_slug = slugify(programme_name)
         try:
             programme_names[sphere][government]
         except KeyError:
@@ -70,7 +70,7 @@ def process_row(row, row_index,
     department_name = row[dept_name_key]
     auth_prog_name \
         = programme_names[sphere][government_name][department_name].\
-        get(slugify(row[prog_name_key], to_lower=True), None)
+        get(slugify(row[prog_name_key]), None)
     if auth_prog_name:
         row[prog_name_key] = auth_prog_name
     else:
@@ -78,7 +78,7 @@ def process_row(row, row_index,
         if warning_key not in warned:
             logging.warning("No authoritative programme name found for %s - %s - %s (%s)",
                             government_name, row[dept_name_key], row[prog_name_key],
-                            slugify(row[prog_name_key], to_lower=True))
+                            slugify(row[prog_name_key]))
             warned[warning_key] = True
     return row
 
