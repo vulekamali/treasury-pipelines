@@ -1,19 +1,3 @@
-# Vote No.
-# Department
-# Programme No.
-# Programme
-# Subprogramme No.
-# Subprogramme
-# Transfers and subsidies / Payments for financial assets detail
-# DOR
-# Econ1
-# Econ2
-# Econ3
-# Econ4
-# Econ5
-# FinYear
-# FY_descript
-# Value
 aene-2019-20:
   title: Adjusted Estimates of National Expenditure
   description: Main and Adjusted budget, with detail on the kind of adjustments.
@@ -24,12 +8,15 @@ aene-2019-20:
       name: 'aene-2019-20'
       format: 'xlsx'
     cache: true
+
   - run: delete_fields
     parameters:
       resources: aene-2019-20
       fields:
+      - Vote Number
       - DOR
       - "Transfers and subsidies / Payments for financial assets detail"
+
   - run: add_computed_field
     parameters:
       resources: aene-2019-20
@@ -37,6 +24,7 @@ aene-2019-20:
       - operation: format
         target: Budget Phase
         with: '{FY_descript}'
+
   - run: find_replace
     parameters:
       resources: aene-2019-20
@@ -55,9 +43,52 @@ aene-2019-20:
           replace: Total
         - find: ^(Adjusted appropriation)
           replace: Total
+
   - run: multiply
     parameters:
       value_field: 'Value'
+
+  # Deduplicate
+  - run: join
+    parameters:
+      source:
+        name: aene-2019-20
+        key:
+          - "Department"
+          - "Programme Number"
+          - "Programme"
+          - "Subprogramme Number"
+          - "Subprogramme"
+          - "Econ1"
+          - "Econ2"
+          - "Econ3"
+          - "Econ4"
+          - "Econ5"
+          - "FinYear"
+          - "Budget Phase"
+          - "FY_descript"
+        delete: yes
+      target:
+        name: aene-2019-20
+        key: null
+      fields:
+        "Department": {}
+        "Programme Number": {}
+        "Programme": {}
+        "Subprogramme Number": {}
+        "Subprogramme": {}
+        "Econ1": {}
+        "Econ2": {}
+        "Econ3": {}
+        "Econ4": {}
+        "Econ5": {}
+        "FinYear": {}
+        "Budget Phase": {}
+        "FY_descript": {}
+        "Value":
+          aggregate: sum
+      full: true
+
   - run: dump_to_path
     parameters:
       out-path: './processed'
