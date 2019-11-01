@@ -83,6 +83,19 @@ budget-vs-actual-national:
     #### AENE
     - run: load
       parameters:
+        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/adjusted-estimates-of-nationa-expenditure-2019-20-uploaded-2019-10-31t1315/final/data/aene-2019-20.csv'
+        name: 'aene-2019-20'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: aene-2019-20
+        in:
+          - finyear: '2019'
+          - budget_phase: 'Adjusted appropriation'
+
+    - run: load
+      parameters:
         from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/aene-2018-19-v2/final/data/aene-2018-19.csv'
         name: 'aene-2018-19'
         format: 'csv'
@@ -134,14 +147,10 @@ budget-vs-actual-national:
       parameters:
         resources:
           - aene-2015-16
-        out:
-          - budget_phase: 'Voted (Main appropriation)'
-    - run: filter
-      parameters:
-        resources:
           - aene-2016-17
           - aene-2017-18
           - aene-2018-19
+          - aene-2019-20
         out:
           - budget_phase: 'Voted (Main appropriation)'
 
@@ -191,6 +200,7 @@ budget-vs-actual-national:
         out:
           - Budget Phase: 'Adjusted Appropriation'
 
+    # Deduplicate and rename fields for output
     - run: concatenate
       parameters:
         sources:
@@ -206,27 +216,28 @@ budget-vs-actual-national:
           - aene-2016-17
           - aene-2017-18
           - aene-2018-19
+          - aene-2019-20
         target:
           name: budget-vs-actual-national
           path: data/budget-vs-actual-national.csv
         fields:
-          Budget Phase: ['budget phase', 'budget_phase']
+          BudgetPhase: ['budget phase', 'budget_phase', 'Budget Phase']
           Department: ['department']
-          Econ1: ['econ1', 'economic_classification_1']
-          Econ2: ['econ2', 'economic_classification_2']
-          Econ3: ['econ3', 'economic_classification_3']
-          Econ4: ['econ4', 'economic_classification_4']
-          Econ5: ['econ5', 'economic_classification_5']
-          Function Group 1: ['fg1', 'government_function', 'FG1']
-          Function Group 2: ['fg2', 'FG2']
-          Programme Number: ['ProgNo', 'progno', 'Progno', 'programme_number']
+          EconomicClassification1: ['Econ1', 'econ1', 'economic_classification_1']
+          EconomicClassification2: ['Econ2', 'econ2', 'economic_classification_2']
+          EconomicClassification3: ['Econ3', 'econ3', 'economic_classification_3']
+          EconomicClassification4: ['Econ4', 'econ4', 'economic_classification_4']
+          EcontomicClassification5: ['Econ5', 'econ5', 'economic_classification_5']
+          FunctionGroup1: ['fg1', 'government_function', 'FG1']
+          FunctionGroup2: ['fg2', 'FG2']
+          ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number', 'Programme Number']
           Programme: ['programme']
-          Subprogramme Number: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number']
+          SubprogNumber: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number', 'Subprogramme Number']
           Subprogramme: ['subprogramme']
-          Vote Number: ['voteno', 'Voteno', 'VoteNo', 'vote_number']
-          Amount Kind: ['amount kind', 'fy_descript', 'FY_Descript']
+          VoteNumber: ['voteno', 'Voteno', 'VoteNo', 'vote_number', 'Vote Number']
+          AmountKind: ['amount kind', 'fy_descript', 'FY_Descript', 'FY_descript', 'Amount Kind']
           Value: ['value']
-          Financial Year: ['finyear', 'FinYear', 'financial_year']
+          FinancialYear: ['finyear', 'FinYear', 'financial_year', 'Financial Year']
       cache: false
 
     - run: add_computed_field
