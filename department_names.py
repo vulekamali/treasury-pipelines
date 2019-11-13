@@ -6,7 +6,7 @@ import os
 import requests
 import yaml
 
-portal_url = os.environ.get('PORTAL_URL', "https://dynamicbudgetportal.openup.org.za/")
+portal_url = os.environ.get('PORTAL_URL', "https://vulekamali.gov.za/")
 
 department_names = {
     'national': {},
