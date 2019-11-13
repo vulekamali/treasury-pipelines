@@ -47,7 +47,7 @@ pybloom-live==2.3.2
 python-dateutil==2.7.5
 pytimeparse==1.1.8
 pytz==2018.7
-PyYAML==3.13
+PyYAML==5.1
 readchar==2.0.1
 redis==2.10.6
 regex==2018.11.6
