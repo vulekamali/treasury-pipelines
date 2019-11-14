@@ -6,7 +6,7 @@ import os
 import requests
 import csv
 
-portal_url = os.environ.get('PORTAL_URL', "https://vulekamali.gov.za/")
+portal_url = os.environ.get("PORTAL_URL", "https://vulekamali.gov.za/")
 
 department_names = {
     "2014-15": {"national": {}, "provincial": {},},
@@ -41,17 +41,15 @@ def modify_datapackage(datapackage, parameters, stats):
     return datapackage
 
 
-def process_row(row, row_index,
-                resource_descriptor, resource_index,
-                parameters, stats):
+def process_row(row, row_index, resource_descriptor, resource_index, parameters, stats):
     financial_year = parameters.get("financial_year_column", "FinYear")
     department_column = parameters.get("department_column", "department")
     government_column = parameters.get("government_column", "government")
     department_slug = slugify(row[department_column])
-    sphere = parameters['sphere']
-    if sphere == 'national':
-        government_name = 'South Africa'
-    elif sphere == 'provincial':
+    sphere = parameters["sphere"]
+    if sphere == "national":
+        government_name = "South Africa"
+    elif sphere == "provincial":
         government_name = row[government_column]
     else:
         raise Exception("Unknown sphere: %r" % sphere)
@@ -63,11 +61,14 @@ def process_row(row, row_index,
     else:
         warning_key = (government_name, row[department_column])
         if warning_key not in warned:
-            logging.warning("No authoritative department name found for %s - %s (%s)",
-                         government_name, row[department_column], department_slug)
+            logging.warning(
+                "No authoritative department name found for %s - %s (%s)",
+                government_name,
+                row[department_column],
+                department_slug,
+            )
             warned[warning_key] = True
     return row
 
 
-process(modify_datapackage=modify_datapackage,
-        process_row=process_row)
+process(modify_datapackage=modify_datapackage, process_row=process_row)
