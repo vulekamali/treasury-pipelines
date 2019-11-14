@@ -9,10 +9,6 @@ import csv
 portal_url = os.environ.get("PORTAL_URL", "https://vulekamali.gov.za/")
 
 department_names = {
-    "2010-11": {"national": {}, "provincial": {},},
-    "2011-12": {"national": {}, "provincial": {},},
-    "2012-13": {"national": {}, "provincial": {},},
-    "2013-14": {"national": {}, "provincial": {},},
     "2014-15": {"national": {}, "provincial": {},},
     "2015-16": {"national": {}, "provincial": {},},
     "2016-17": {"national": {}, "provincial": {},},
@@ -34,7 +30,10 @@ def modify_datapackage(datapackage, parameters, stats):
         listing_url_path = fin_year + "/departments.csv"
         listing_url = portal_url + listing_url_path
         r = requests.get(listing_url)
-        r.raise_for_status()
+        if r.status_code != 200:
+            logging.warning(f"Departments couldn't be found in URL ({listing_url})!")
+            continue
+
         reader = csv.DictReader(r.text.splitlines(), delimiter=",")
         for row in reader:
             if row["government"] not in governments:
@@ -49,6 +48,7 @@ def modify_datapackage(datapackage, parameters, stats):
 
 
 def process_row(row, row_index, resource_descriptor, resource_index, parameters, stats):
+    authoritative_department_name = None
     financial_year = parameters.get("financial_year_column", "FinYear")
     department_column = parameters.get("department_column", "department")
     government_column = parameters.get("government_column", "government")
@@ -62,9 +62,17 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
         raise Exception("Unknown sphere: %r" % sphere)
     year = row[financial_year]
     fin_year = year + "-" + str(int(year[2:]) + 1)
-    authoritative_department_name = department_names[fin_year][sphere][
-        government_name
-    ].get(department_slug, None)
+    if fin_year in department_names.keys():
+        authoritative_department_name = department_names[fin_year][sphere][
+            government_name
+        ].get(department_slug, None)
+    else:
+        warning_key = (government_name, row[department_column])
+        if warning_key not in warned:
+            logging.warning(
+                f"No department list found for financial year {fin_year}.")
+            warned[warning_key] = True
+
     if authoritative_department_name:
         row[department_column] = authoritative_department_name
     else:
