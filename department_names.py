@@ -9,12 +9,12 @@ import csv
 portal_url = os.environ.get("PORTAL_URL", "https://vulekamali.gov.za/")
 
 department_names = {
-    "2014": {"national": {}, "provincial": {},},
-    "2015": {"national": {}, "provincial": {},},
-    "2016": {"national": {}, "provincial": {},},
-    "2017": {"national": {}, "provincial": {},},
-    "2018": {"national": {}, "provincial": {},},
-    "2019": {"national": {}, "provincial": {},},
+    "2014-15": {"national": {}, "provincial": {},},
+    "2015-16": {"national": {}, "provincial": {},},
+    "2016-17": {"national": {}, "provincial": {},},
+    "2017-18": {"national": {}, "provincial": {},},
+    "2018-19": {"national": {}, "provincial": {},},
+    "2019-20": {"national": {}, "provincial": {},},
 }
 
 warned = {}
@@ -26,8 +26,6 @@ def modify_datapackage(datapackage, parameters, stats):
     financial_years = ["2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20"]
     sphere = parameters["sphere"]
     for fin_year in financial_years:
-        # We need to remove values after '-' character
-        year = fin_year[:-3]
         governments = []
         listing_url_path = fin_year + "/departments.csv"
         listing_url = portal_url + listing_url_path
@@ -36,10 +34,10 @@ def modify_datapackage(datapackage, parameters, stats):
         reader = csv.DictReader(r.text.splitlines(), delimiter=",")
         for row in reader:
             if row["government"] not in governments:
-                department_names[year][sphere][row["government"]] = {}
+                department_names[fin_year][sphere][row["government"]] = {}
                 governments.append(row["government"])
 
-            department_names[year][sphere][row["government"]][
+            department_names[fin_year][sphere][row["government"]][
                 slugify(row["department_name"])
             ] = row["department_name"]
     logging.info(pformat(department_names))
@@ -58,7 +56,8 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
         government_name = row[government_column]
     else:
         raise Exception("Unknown sphere: %r" % sphere)
-    fin_year = row[financial_year]
+    year = row[financial_year]
+    fin_year = year + "-" + str(int(year[2:]) + 1)
     authoritative_department_name = department_names[fin_year][sphere][
         government_name
     ].get(department_slug, None)
