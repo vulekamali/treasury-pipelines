@@ -4,7 +4,7 @@ from slugify import slugify
 import logging
 import os
 import requests
-import yaml
+import csv
 
 portal_url = os.environ.get('PORTAL_URL', "https://vulekamali.gov.za/")
 
@@ -24,12 +24,13 @@ def modify_datapackage(datapackage, parameters, stats):
     listing_url = portal_url + listing_url_path
     r = requests.get(listing_url)
     r.raise_for_status()
-    response = yaml.load(r.text)
-    for government in response[sphere]:
-        department_names[sphere][government['name']] = {}
-        for department in government['departments']:
-            department_names[sphere][government['name']][department['slug']] \
-                = department['name']
+    reader = csv.DictReader(r.text.splitlines(), delimiter=",")
+    for row in reader:
+        department_names[sphere][row["government"]] = {}
+        department_names[sphere][row["government"]][
+            slugify(row["department_name"])
+        ] = row["department_name"]
+
     logging.info(pformat(department_names))
     return datapackage
 
