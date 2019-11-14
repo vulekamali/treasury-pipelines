@@ -9,27 +9,33 @@ import csv
 portal_url = os.environ.get('PORTAL_URL', "https://vulekamali.gov.za/")
 
 department_names = {
-    'national': {},
-    'provincial': {},
+    "2014-15": {"national": {}, "provincial": {},},
+    "2015-16": {"national": {}, "provincial": {},},
+    "2016-17": {"national": {}, "provincial": {},},
+    "2017-18": {"national": {}, "provincial": {},},
+    "2018-19": {"national": {}, "provincial": {},},
+    "2019-20": {"national": {}, "provincial": {},},
 }
+
 warned = {}
 
 
 def modify_datapackage(datapackage, parameters, stats):
     # We're not modifying the datapackage but we execute here to execute once
     # before processing rows.
-    year_slug = parameters['financial_year']
-    sphere = parameters['sphere']
-    listing_url_path = year_slug + '/departments.yaml'
-    listing_url = portal_url + listing_url_path
-    r = requests.get(listing_url)
-    r.raise_for_status()
-    reader = csv.DictReader(r.text.splitlines(), delimiter=",")
-    for row in reader:
-        department_names[sphere][row["government"]] = {}
-        department_names[sphere][row["government"]][
-            slugify(row["department_name"])
-        ] = row["department_name"]
+    financial_years = ["2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20"]
+    sphere = parameters["sphere"]
+    for fin_year in financial_years:
+        listing_url_path = fin_year + "/departments.csv"
+        listing_url = portal_url + listing_url_path
+        r = requests.get(listing_url)
+        r.raise_for_status()
+        reader = csv.DictReader(r.text.splitlines(), delimiter=",")
+        for row in reader:
+            department_names[fin_year][sphere][row["government"]] = {}
+            department_names[fin_year][sphere][row["government"]][
+                slugify(row["department_name"])
+            ] = row["department_name"]
 
     logging.info(pformat(department_names))
     return datapackage
