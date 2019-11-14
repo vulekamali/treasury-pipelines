@@ -9,6 +9,10 @@ import csv
 portal_url = os.environ.get("PORTAL_URL", "https://vulekamali.gov.za/")
 
 department_names = {
+    "2010-11": {"national": {}, "provincial": {},},
+    "2011-12": {"national": {}, "provincial": {},},
+    "2012-13": {"national": {}, "provincial": {},},
+    "2013-14": {"national": {}, "provincial": {},},
     "2014-15": {"national": {}, "provincial": {},},
     "2015-16": {"national": {}, "provincial": {},},
     "2016-17": {"national": {}, "provincial": {},},
@@ -23,7 +27,7 @@ warned = {}
 def modify_datapackage(datapackage, parameters, stats):
     # We're not modifying the datapackage but we execute here to execute once
     # before processing rows.
-    financial_years = ["2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20"]
+    financial_years = list(department_names.keys())
     sphere = parameters["sphere"]
     for fin_year in financial_years:
         governments = []
