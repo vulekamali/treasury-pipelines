@@ -44,8 +44,9 @@ def modify_datapackage(datapackage, parameters, stats):
 def process_row(row, row_index,
                 resource_descriptor, resource_index,
                 parameters, stats):
-    department_column = parameters.get('department_column', 'department')
-    government_column = parameters.get('government_column', 'government')
+    financial_year = parameters.get("financial_year_column", "FinYear")
+    department_column = parameters.get("department_column", "department")
+    government_column = parameters.get("government_column", "government")
     department_slug = slugify(row[department_column])
     sphere = parameters['sphere']
     if sphere == 'national':
@@ -54,8 +55,9 @@ def process_row(row, row_index,
         government_name = row[government_column]
     else:
         raise Exception("Unknown sphere: %r" % sphere)
-    authoritative_department_name \
-        = department_names[sphere][government_name].get(department_slug, None)
+    authoritative_department_name = department_names[financial_year][sphere][
+        government_name
+    ].get(department_slug, None)
     if authoritative_department_name:
         row[department_column] = authoritative_department_name
     else:
