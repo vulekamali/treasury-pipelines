@@ -62,16 +62,13 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
         raise Exception("Unknown sphere: %r" % sphere)
     year = row[financial_year]
     fin_year = year + "-" + str(int(year[2:]) + 1)
-    if fin_year in department_names.keys():
+    if (
+        fin_year in department_names.keys()
+        and government_name in department_names[fin_year][sphere].keys()
+    ):
         authoritative_department_name = department_names[fin_year][sphere][
             government_name
         ].get(department_slug, None)
-    else:
-        warning_key = (government_name, row[department_column])
-        if warning_key not in warned:
-            logging.warning(
-                f"No department list found for financial year {fin_year}.")
-            warned[warning_key] = True
 
     if authoritative_department_name:
         row[department_column] = authoritative_department_name
@@ -79,10 +76,11 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
         warning_key = (government_name, row[department_column])
         if warning_key not in warned:
             logging.warning(
-                "No authoritative department name found for %s - %s (%s)",
+                "No authoritative department name found for %s - %s (%s) in %s",
                 government_name,
                 row[department_column],
                 department_slug,
+                fin_year,
             )
             warned[warning_key] = True
     return row
