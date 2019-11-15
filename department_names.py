@@ -30,7 +30,9 @@ def modify_datapackage(datapackage, parameters, stats):
         listing_url_path = fin_year + "/departments.csv"
         listing_url = portal_url + listing_url_path
         r = requests.get(listing_url)
-        if r.status_code != 200:
+        if r.status_code != 200 and r.status_code != 404:
+            r.raise_for_status()
+        elif r.status_code == 404:
             logging.warning(f"Departments couldn't be found in URL ({listing_url})!")
             continue
 
