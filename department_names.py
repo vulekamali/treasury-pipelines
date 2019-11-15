@@ -8,44 +8,48 @@ import csv
 
 portal_url = os.environ.get("PORTAL_URL", "https://vulekamali.gov.za/")
 
-department_names = {
-    "2014-15": {"national": {}, "provincial": {},},
-    "2015-16": {"national": {}, "provincial": {},},
-    "2016-17": {"national": {}, "provincial": {},},
-    "2017-18": {"national": {}, "provincial": {},},
-    "2018-19": {"national": {}, "provincial": {},},
-    "2019-20": {"national": {}, "provincial": {},},
-}
+department_names = {}
 
 warned = {}
+
+
+def get_financial_year(fin_year):
+    governments = []
+    listing_url_path = fin_year + "/departments.csv"
+    listing_url = portal_url + listing_url_path
+    r = requests.get(listing_url)
+    if r.status_code != 200 and r.status_code != 404:
+        r.raise_for_status()
+    elif r.status_code == 404:
+        logging.warning(f"Departments couldn't be found in URL ({listing_url})!")
+        return None
+
+    department_names[fin_year] = {
+        "national": {},
+        "provincial": {},
+    }
+    reader = csv.DictReader(r.text.splitlines(), delimiter=",")
+    for row in reader:
+        if row["government"] == "South Africa":
+            sphere = "national"
+        else:
+            sphere = "provincial"
+
+        if row["government"] not in governments:
+            department_names[fin_year][sphere][row["government"]] = {}
+            governments.append(row["government"])
+
+        department_names[fin_year][sphere][row["government"]][
+            slugify(row["department_name"])
+        ] = row["department_name"]
+    logging.info(pformat(department_names))
+    return department_names[fin_year]
 
 
 def modify_datapackage(datapackage, parameters, stats):
     # We're not modifying the datapackage but we execute here to execute once
     # before processing rows.
-    financial_years = list(department_names.keys())
-    sphere = parameters["sphere"]
-    for fin_year in financial_years:
-        governments = []
-        listing_url_path = fin_year + "/departments.csv"
-        listing_url = portal_url + listing_url_path
-        r = requests.get(listing_url)
-        if r.status_code != 200 and r.status_code != 404:
-            r.raise_for_status()
-        elif r.status_code == 404:
-            logging.warning(f"Departments couldn't be found in URL ({listing_url})!")
-            continue
 
-        reader = csv.DictReader(r.text.splitlines(), delimiter=",")
-        for row in reader:
-            if row["government"] not in governments:
-                department_names[fin_year][sphere][row["government"]] = {}
-                governments.append(row["government"])
-
-            department_names[fin_year][sphere][row["government"]][
-                slugify(row["department_name"])
-            ] = row["department_name"]
-    logging.info(pformat(department_names))
     return datapackage
 
 
@@ -64,8 +68,10 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
         raise Exception("Unknown sphere: %r" % sphere)
     year = row[financial_year]
     fin_year = year + "-" + str(int(year[2:]) + 1)
+    if fin_year not in department_names.keys():
+        department_names[fin_year] = get_financial_year(fin_year)
     if (
-        fin_year in department_names.keys()
+        department_names[fin_year] is not None
         and government_name in department_names[fin_year][sphere].keys()
     ):
         authoritative_department_name = department_names[fin_year][sphere][
