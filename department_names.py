@@ -40,7 +40,7 @@ def get_financial_year(fin_year):
             governments.append(row["government"])
 
         department_names[fin_year][sphere][row["government"]][
-            slugify(row["department_name"])
+            slugify(row["department_name"], to_lower=True)
         ] = row["department_name"]
     logging.info(pformat(department_names))
     return department_names[fin_year]
@@ -58,7 +58,7 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
     financial_year = parameters.get("financial_year_column", "FinYear")
     department_column = parameters.get("department_column", "department")
     government_column = parameters.get("government_column", "government")
-    department_slug = slugify(row[department_column])
+    department_slug = slugify(row[department_column], to_lower=True)
     sphere = parameters["sphere"]
     if sphere == "national":
         government_name = "South Africa"
