@@ -13,9 +13,9 @@ department_names = {}
 warned = {}
 
 
-def get_financial_year(fin_year):
+def get_financial_year(fin_year, sphere):
     governments = []
-    listing_url_path = fin_year + "/departments.csv"
+    listing_url_path = fin_year + "/" + sphere + "/departments.csv"
     listing_url = portal_url + listing_url_path
     r = requests.get(listing_url)
     if r.status_code != 200 and r.status_code != 404:
@@ -24,17 +24,9 @@ def get_financial_year(fin_year):
         logging.warning(f"Departments couldn't be found in URL ({listing_url})!")
         return None
 
-    department_names[fin_year] = {
-        "national": {},
-        "provincial": {},
-    }
+    department_names[fin_year] = {sphere: {}}
     reader = csv.DictReader(r.text.splitlines(), delimiter=",")
     for row in reader:
-        if row["government"] == "South Africa":
-            sphere = "national"
-        else:
-            sphere = "provincial"
-
         if row["government"] not in governments:
             department_names[fin_year][sphere][row["government"]] = {}
             governments.append(row["government"])
@@ -69,7 +61,7 @@ def process_row(row, row_index, resource_descriptor, resource_index, parameters,
     year = row[financial_year]
     fin_year = year + "-" + str(int(year[2:]) + 1)
     if fin_year not in department_names.keys():
-        department_names[fin_year] = get_financial_year(fin_year)
+        department_names[fin_year] = get_financial_year(fin_year, sphere)
     if (
         department_names[fin_year] is not None
         and government_name in department_names[fin_year][sphere].keys()
