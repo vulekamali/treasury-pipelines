@@ -9,7 +9,7 @@ If not using docker, install Python dependencies:
 
 [Set up and activate a python 3 virtual environment.](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
 
-Install the dependencies in the virtual environment using `pip install -r requirements.txt`
+Install the dependencies in the virtual environment using `pipenv install`
 
 ## Running pipelines
 
@@ -48,7 +48,7 @@ OpenSpending relies on each row ignoring amounts having a unique set of dimensio
 
 In database terms, the composite primary key for each row, made up of each of the classification columns, must be unique.
 
-To check if your dataset has unique rows or needs additional processing to make it unique, use `csvkit`. Install it in a different python virtualenv from datapackage-pipelines.
+To check if your dataset has unique rows or needs additional processing to make it unique, use `csvkit`. ***Install it in a different python virtualenv from datapackage-pipelines*** since it uses a conflicting package `python-slugify`.
 
 First list the fields to get their indexes:
 
