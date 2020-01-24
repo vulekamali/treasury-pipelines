@@ -1,7 +1,7 @@
 # Treasury Datapackage Pipelines
 
 Pipelines used to prepare data for upload to OpenSpending Packager while we're
-not ready to use os-data-importers but need datapackage-pipelines
+not ready to use os-data-importers but need [datapackage-pipelines](https://github.com/frictionlessdata/datapackage-pipelines)
 
 ## Setup
 
