@@ -16,7 +16,7 @@ Install the dependencies in the virtual environment using `pip install -r requir
 List available pipelines with
 
 ```
-dpp
+pipenv run dpp
 ```
 
 or using docker
@@ -28,7 +28,7 @@ docker run --rm -it -v `pwd`:/pipelines:rw frictionlessdata/datapackage-pipeline
 run a pipeline with
 
 ```
-DPP_PROCESSOR_PATH=$PWD dpp run --verbose ./2018-19/national/aene/aene-2018-19
+DPP_PROCESSOR_PATH=$PWD pipenv run dpp run --verbose ./2018-19/national/aene/aene-2018-19
 ```
 
 or using docker
