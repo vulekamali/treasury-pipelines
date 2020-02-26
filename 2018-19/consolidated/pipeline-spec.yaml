@@ -1,0 +1,45 @@
+consolidated-expenditure-budget-2018-19:
+  title: Consolidated Expenditure Budget 2018-19
+  description: Consolidated dataset consisting of national and provincial expenditure on the function group level
+  pipeline:
+
+    - run: load
+      parameters:
+        from: 'https://s3-eu-west-1.amazonaws.com/manual-uploads.vulekamali.gov.za/consolidated/Budget+2018+-+Consolidated+account+Pivot_2020-02-25t1527-2018-19-only-skip-historical-blanks-value-column.csv'
+        name: 'consolidated-2018-19'
+        format: 'csv'
+      cache: false
+
+    - run: find_replace
+      parameters:
+        resources: consolidated-2018-19
+        fields:
+          - name: 'Value'
+            patterns:
+              - find: ','
+                replace: ''
+
+    - run: set_types
+      parameters:
+        resources: consolidated-2018-19
+        types:
+          Value:
+            type: number
+
+    - run: multiply
+      parameters:
+        value_field: 'Value'
+
+    - run: find_replace
+      parameters:
+        resources: consolidated-2018-19
+        fields:
+          - name: 'Fin Year'
+            patterns:
+              - find: (\d{4})/\d{2}
+                replace: \1
+
+    - run: dump_to_path
+      parameters:
+        out-path: './processed'
+        format: 'csv'
