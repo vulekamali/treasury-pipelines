@@ -8,7 +8,36 @@ budget-vs-actual-national:
     #### ENE
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/f65e577e-1dc3-4b68-9868-a97b84a950e8/resource/ca4b1281-fb9b-4ab2-9e2a-b78a978a98a1/download/estimates-of-national-expenditure-south-africa-2018-19.csv'
+        from: 'NAT-ENE-2020-21-3.csv'
+        name: 'ene-2020-21'
+        format: 'csv'
+      cache: true
+    - run: filter
+      parameters:
+        resources: ene-2020-21
+        in:
+          - FinancialYear: '2020'
+    - run: filter
+      parameters:
+        resources: ene-2020-21
+        out:
+          - BudgetPhase: ' Est. under/(over)'
+          - BudgetPhase: ' Other adjustments'
+          - BudgetPhase: ' Revised estimate'
+          - BudgetPhase: ' Roll-overs'
+          - BudgetPhase: ' Virement'
+    - run: find_replace
+      parameters:
+        resources: ene-2020-21
+        fields:
+        - name: BudgetPhase
+          patterns:
+            - find: \s+([\w ]+)\s+
+              replace: \1
+
+    - run: load
+      parameters:
+        from: 'estimates-of-national-expenditure-south-africa-2018-19.csv'
         name: 'ene-2018-19'
         format: 'csv'
       cache: true
@@ -20,7 +49,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/0cd8235c-d603-4bb5-8695-475a54e053e8/resource/3653542a-87f1-4089-9897-79a1b0392ebb/download/estimates-of-national-expenditure-south-africa-2017-18.csv'
+        from: 'estimates-of-national-expenditure-south-africa-2017-18.csv'
         name: 'ene-2017-18'
         format: 'csv'
       cache: true
@@ -32,7 +61,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/3895fbe6-4f1d-4ec3-a00c-b480db002d26/resource/f04d6407-7e58-47d6-8b20-ccfe8b744cc5/download/ene-2016-17.csv'
+        from: 'ene-2016-17.csv'
         name: 'ene-2016-17'
         format: 'csv'
       cache: false
@@ -44,7 +73,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-national-expenditure-2015-16-uploaded-2019-01-25t0215/final/data/ene-2015-16.csv'
+        from: 'ene-2015-16.csv'
         name: 'ene-2015-16'
         format: 'csv'
       cache: true
@@ -56,7 +85,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/estimates-of-national-expenditure-2019-20-uploaded-2019-02-20t1910/final/data/ene-2019-20.csv'
+        from: 'ene-2019-20.csv'
         name: 'ene-2019-20'
         format: 'csv'
       cache: true
@@ -74,6 +103,7 @@ budget-vs-actual-national:
           - ene-2017-18
           - ene-2018-19
           - ene-2019-20
+          - ene-2020-21
         fields:
           -
             operation: format
@@ -83,7 +113,7 @@ budget-vs-actual-national:
     #### AENE
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/adjusted-estimates-of-nationa-expenditure-2019-20-uploaded-2019-10-31t1315/final/data/aene-2019-20.csv'
+        from: 'aene-2019-20.csv'
         name: 'aene-2019-20'
         format: 'csv'
       cache: true
@@ -96,7 +126,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/aene-2018-19-v2/final/data/aene-2018-19.csv'
+        from: 'aene-2018-19.csv'
         name: 'aene-2018-19'
         format: 'csv'
       cache: true
@@ -108,7 +138,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/aene-2017-18-v3/final/data/aene-2017-18.csv'
+        from: 'aene-2017-18.csv'
         name: 'aene-2017-18'
         format: 'csv'
       cache: true
@@ -121,7 +151,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'http://datastore.openspending.org/b9d2af843f3a7ca223eea07fb608e62a/adjusted-estimates-of-national-expenditure-2016-17/final/data/aene-2016-17.csv'
+        from: 'aene-2016-17.csv'
         name: 'aene-2016-17'
         format: 'csv'
       cache: true
@@ -133,7 +163,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/fe97d4dd-3cab-4fa8-911d-dee89a92489c/resource/4a675d47-a21f-4e1f-863d-f978e70b9a81/download/aene-2015-16.csv'
+        from: 'aene-2015-16.csv'
         name: 'aene-2015-16'
         format: 'csv'
       cache: true
@@ -157,7 +187,7 @@ budget-vs-actual-national:
     #### ARE
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/3909f64d-b35d-4f71-af61-93148d943580/resource/977f2471-53ec-4643-b054-bb59a1eba511/download/are-2017-18.csv'
+        from: 'are-2017-18.csv'
         name: 'are-2017-18'
         format: 'csv'
       cache: true
@@ -169,7 +199,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/5acabeef-4140-4f74-8178-885186677fd3/resource/b2135502-a76e-4d24-bd88-7c5447834d1a/download/are-2016-17.csv'
+        from: 'are-2016-17.csv'
         name: 'are-2016-17'
         format: 'csv'
       cache: true
@@ -181,7 +211,7 @@ budget-vs-actual-national:
 
     - run: load
       parameters:
-        from: 'https://data.vulekamali.gov.za/dataset/e75e7fe3-e80d-421d-95ab-aefd3dbc7819/resource/f5561bdf-2528-4361-9669-32ab64e980ce/download/are-2015-16.csv'
+        from: 'are-2015-16.csv'
         name: 'are-2015-16'
         format: 'csv'
       cache: true
@@ -212,6 +242,7 @@ budget-vs-actual-national:
           - ene-2017-18
           - ene-2018-19
           - ene-2019-20
+          - ene-2020-21
           - aene-2015-16
           - aene-2016-17
           - aene-2017-18
@@ -227,8 +258,8 @@ budget-vs-actual-national:
           EconomicClassification2: ['Econ2', 'econ2', 'economic_classification_2']
           EconomicClassification3: ['Econ3', 'econ3', 'economic_classification_3']
           EconomicClassification4: ['Econ4', 'econ4', 'economic_classification_4']
-          EcontomicClassification5: ['Econ5', 'econ5', 'economic_classification_5']
-          FunctionGroup1: ['fg1', 'government_function', 'FG1']
+          EconomicClassification5: ['Econ5', 'econ5', 'economic_classification_5']
+          FunctionGroup1: ['fg1', 'government_function', 'FG1', ' FunctionGroup1']
           FunctionGroup2: ['fg2', 'FG2']
           ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number', 'Programme Number']
           Programme: ['programme']
@@ -236,9 +267,56 @@ budget-vs-actual-national:
           Subprogramme: ['subprogramme']
           VoteNumber: ['voteno', 'Voteno', 'VoteNo', 'vote_number', 'Vote Number']
           AmountKind: ['amount kind', 'fy_descript', 'FY_Descript', 'FY_descript', 'Amount Kind']
-          Value: ['value']
+          Value: ['value', 'Amount']
           FinancialYear: ['finyear', 'FinYear', 'financial_year', 'Financial Year']
       cache: false
+
+  # Deduplicate
+  - run: join
+    parameters:
+      source:
+        name: budget-vs-actual-national
+        key:
+          - BudgetPhase
+          - Department
+          - EconomicClassification1
+          - EconomicClassification2
+          - EconomicClassification3
+          - EconomicClassification4
+          - EconomicClassification5
+          - FunctionGroup1
+          - FunctionGroup2
+          - ProgNumber
+          - Programme
+          - SubprogNumber
+          - Subprogramme
+          - VoteNumber
+          - AmountKind
+          - FinancialYear
+        delete: yes
+      target:
+        name: budget-vs-actual-national
+        key: null
+      fields:
+        BudgetPhase: {}
+        Department: {}
+        EconomicClassification1: {}
+        EconomicClassification2: {}
+        EconomicClassification3: {}
+        EconomicClassification4: {}
+        EconomicClassification5: {}
+        FunctionGroup1: {}
+        FunctionGroup2: {}
+        ProgNumber: {}
+        Programme: {}
+        SubprogNumber: {}
+        Subprogramme: {}
+        VoteNumber: {}
+        AmountKind: {}
+        FinancialYear: {}
+        "Value":
+          aggregate: sum
+      full: true
 
     - run: add_computed_field
       parameters:
@@ -248,6 +326,16 @@ budget-vs-actual-national:
           - operation: format
             target: Government
             with: 'South Africa'
+
+    - run: string_to_int
+      parameters:
+        resources: budget-vs-actual-national
+        column_name: Value
+
+    - run: round
+      parameters:
+        resources: budget-vs-actual-national
+        value_field: Value
 
     - run: dump_to_path
       parameters:
