@@ -17,6 +17,7 @@ budget-vs-actual-national:
         resources: ene-2020-21
         in:
           - FinancialYear: '2020'
+          - BudgetPhase: ' Main appropriation'
     - run: filter
       parameters:
         resources: ene-2020-21
@@ -258,9 +259,7 @@ budget-vs-actual-national:
           EconomicClassification2: ['Econ2', 'econ2', 'economic_classification_2']
           EconomicClassification3: ['Econ3', 'econ3', 'economic_classification_3']
           EconomicClassification4: ['Econ4', 'econ4', 'economic_classification_4']
-          EconomicClassification5: ['Econ5', 'econ5', 'economic_classification_5']
           FunctionGroup1: ['fg1', 'government_function', 'FG1', ' FunctionGroup1']
-          FunctionGroup2: ['fg2', 'FG2']
           ProgNumber: ['ProgNo', 'progno', 'Progno', 'programme_number', 'Programme Number']
           Programme: ['programme']
           SubprogNumber: ['SprogNo', 'sprogno', 'Sprogno', 'subprogramme_number', 'Subprogramme Number']
@@ -270,6 +269,16 @@ budget-vs-actual-national:
           Value: ['value', 'Amount']
           FinancialYear: ['finyear', 'FinYear', 'financial_year', 'Financial Year']
       cache: false
+
+    - run: string_to_int
+      parameters:
+        resources: budget-vs-actual-national
+        column_name: Value
+
+    - run: round
+      parameters:
+        resources: budget-vs-actual-national
+        value_field: Value
 
     # Deduplicate
     - run: join
@@ -283,9 +292,7 @@ budget-vs-actual-national:
             - EconomicClassification2
             - EconomicClassification3
             - EconomicClassification4
-            - EconomicClassification5
             - FunctionGroup1
-            - FunctionGroup2
             - ProgNumber
             - Programme
             - SubprogNumber
@@ -304,9 +311,7 @@ budget-vs-actual-national:
           EconomicClassification2: {}
           EconomicClassification3: {}
           EconomicClassification4: {}
-          EconomicClassification5: {}
           FunctionGroup1: {}
-          FunctionGroup2: {}
           ProgNumber: {}
           Programme: {}
           SubprogNumber: {}
@@ -326,16 +331,6 @@ budget-vs-actual-national:
           - operation: format
             target: Government
             with: 'South Africa'
-
-    - run: string_to_int
-      parameters:
-        resources: budget-vs-actual-national
-        column_name: Value
-
-    - run: round
-      parameters:
-        resources: budget-vs-actual-national
-        value_field: Value
 
     - run: dump_to_path
       parameters:
