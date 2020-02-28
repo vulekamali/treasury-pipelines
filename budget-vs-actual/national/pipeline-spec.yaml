@@ -271,52 +271,52 @@ budget-vs-actual-national:
           FinancialYear: ['finyear', 'FinYear', 'financial_year', 'Financial Year']
       cache: false
 
-  # Deduplicate
-  - run: join
-    parameters:
-      source:
-        name: budget-vs-actual-national
-        key:
-          - BudgetPhase
-          - Department
-          - EconomicClassification1
-          - EconomicClassification2
-          - EconomicClassification3
-          - EconomicClassification4
-          - EconomicClassification5
-          - FunctionGroup1
-          - FunctionGroup2
-          - ProgNumber
-          - Programme
-          - SubprogNumber
-          - Subprogramme
-          - VoteNumber
-          - AmountKind
-          - FinancialYear
-        delete: yes
-      target:
-        name: budget-vs-actual-national
-        key: null
-      fields:
-        BudgetPhase: {}
-        Department: {}
-        EconomicClassification1: {}
-        EconomicClassification2: {}
-        EconomicClassification3: {}
-        EconomicClassification4: {}
-        EconomicClassification5: {}
-        FunctionGroup1: {}
-        FunctionGroup2: {}
-        ProgNumber: {}
-        Programme: {}
-        SubprogNumber: {}
-        Subprogramme: {}
-        VoteNumber: {}
-        AmountKind: {}
-        FinancialYear: {}
-        "Value":
-          aggregate: sum
-      full: true
+    # Deduplicate
+    - run: join
+      parameters:
+        source:
+          name: budget-vs-actual-national
+          key:
+            - BudgetPhase
+            - Department
+            - EconomicClassification1
+            - EconomicClassification2
+            - EconomicClassification3
+            - EconomicClassification4
+            - EconomicClassification5
+            - FunctionGroup1
+            - FunctionGroup2
+            - ProgNumber
+            - Programme
+            - SubprogNumber
+            - Subprogramme
+            - VoteNumber
+            - AmountKind
+            - FinancialYear
+          delete: yes
+        target:
+          name: budget-vs-actual-national
+          key: null
+        fields:
+          BudgetPhase: {}
+          Department: {}
+          EconomicClassification1: {}
+          EconomicClassification2: {}
+          EconomicClassification3: {}
+          EconomicClassification4: {}
+          EconomicClassification5: {}
+          FunctionGroup1: {}
+          FunctionGroup2: {}
+          ProgNumber: {}
+          Programme: {}
+          SubprogNumber: {}
+          Subprogramme: {}
+          VoteNumber: {}
+          AmountKind: {}
+          FinancialYear: {}
+          "Value":
+            aggregate: sum
+        full: true
 
     - run: add_computed_field
       parameters:

@@ -11,7 +11,11 @@ def process_row(row, row_index,
                 parameters, stats):
     column_name = parameters.get('column_name')
     try:
-        row[column_name] = int(row[column_name])
+        val = row[column_name]
+        if isinstance(val, str):
+            if "." in val:
+                val = float(val)
+            row[column_name] = int(val)
         return row
     except:
         logging.exception("Error with row %r", row)
